@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/06 00:31:24 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/06 18:48:06 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,8 @@ SRC_MEM		:=	memory/ft_bzero.c 					\
 				memory/ft_memcpy.c 					\
 				memory/ft_memmove.c 				\
 				memory/ft_memset.c 					\
-				memory/ft_free_tab.c
+				memory/ft_free_tab.c				\
+				memory/ft_close_v.c
 
 # PRINT
 SRC_PRINT	:=	stdout/ft_displays.c				\

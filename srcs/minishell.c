@@ -6,13 +6,13 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:01:13 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/03 23:54:51 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:59:47 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	g_exit_code;
+int	g_exit_code = 0;
 
 int	ft_isnt_empty(char *str)
 {
@@ -84,7 +84,7 @@ int	main(int argc, char **argv, char **envp)
 	env = ft_setup_env(argv, envp);
 	ft_print_logo(env);
 	ft_signal_state(SIGHANDLER_INT);
-	while (1)
+	while (42 == 42)
 	{
 		ft_update_env(&env);
 		ft_tree_holder(1, NULL);

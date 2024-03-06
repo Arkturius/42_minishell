@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:50:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 19:55:53 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:19:29 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,15 @@ void	ft_wait_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex)
 	ft_close_command(cmd);
 }
 
-t_error	ft_builtin_checker(t_command *cmd)
+t_error	ft_builtin_checker(t_command *cmd, t_fd fd)
 {
 	char	**tmp;
 
 	tmp = cmd->args;
+	if (cmd->infile == STDIN_FILENO && fd.in != STDIN_FILENO)
+		cmd->infile = fd.in;
+	if (cmd->outfile == STDOUT_FILENO && fd.out != STDOUT_FILENO)
+		cmd->outfile = fd.out;
 	if (!ft_strncmp(*tmp, "echo", 5))
 		return (ERR_NOERRS);
 	tmp++;
@@ -80,7 +84,7 @@ t_error	ft_builtin_checker(t_command *cmd)
 	return (ERR_NOERRS);
 }
 
-t_error	ft_builtin(t_command *cmd, int *fd, t_executer *ex, t_mode mode)
+t_error	ft_builtin(t_command *cmd, t_fd fd, t_executer *ex, t_mode mode)
 {
 	char		*trim;
 	char		**tmp;
@@ -96,13 +100,13 @@ t_error	ft_builtin(t_command *cmd, int *fd, t_executer *ex, t_mode mode)
 	free(trim);
 	if (!*tmp)
 		return (ERR_ERRORS);
-	if (cmd->infile == STDIN_FILENO && fd[0] != STDIN_FILENO)
-		cmd->infile = fd[0];
-	if (cmd->outfile == STDOUT_FILENO && fd[1] != STDOUT_FILENO)
-		cmd->outfile = fd[1];
-	if (ft_builtin_checker(cmd))
+	if (mode == EX_LPIPE)
+		ft_pipes_push(&(ex->pipes), ft_init_pipes());
+	if (mode == EX_LPIPE)
+		fd.out = ex->pipes->fd[1];
+	if (ft_builtin_checker(cmd, fd))
 		return (ERR_NOERRS);
-	if (mode == EX_PIPE)
+	if (mode & 1)
 		ft_pipe_builtin(builtins[tmp - builtins_str], cmd, ex);
 	else
 		ft_wait_builtin(builtins[tmp - builtins_str], cmd, ex);

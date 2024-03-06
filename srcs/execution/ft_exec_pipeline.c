@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:04:23 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/05 20:55:24 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:06:38 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 extern int	g_exit_code;
 
 __always_inline
-void	ft_exec_mux(t_node *tree, int *node_fd, t_executer *ex, t_mode mode)
+void	ft_exec_mux(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 {
-	if (!ex || !tree || !node_fd)
+	if (!ex || !tree)
 		return ;
 	if (tree->command)
 		ft_cmd_handler(tree, node_fd, ex, mode);
@@ -48,8 +48,7 @@ void	ft_wait_pipeline(t_pid *tmp, t_executer *ex, t_mode mode)
 	int		first;
 
 	first = 0;
-	ft_del_pipe(ft_pipes_pop(&(ex->pipes)));
-	while (mode == EX_WAIT && ex->pids && ex->pids != tmp)
+	while (!(mode & 1) && ex->pids && ex->pids != tmp)
 	{
 		towait = ft_pid_pop(&(ex->pids));
 		waitpid(towait->pid, &err_code, 0);
@@ -60,37 +59,46 @@ void	ft_wait_pipeline(t_pid *tmp, t_executer *ex, t_mode mode)
 	}
 }
 
-void	ft_exec_pipe(t_node *tree, int *node_fd, t_executer *ex, t_mode mode)
+void	ft_exec_pipe(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 {
-	int		fds[2];
+	t_fd	fds;
 	t_pid	*tmp;
 	t_pipes	*tmp_pipe;
 
 	tmp = NULL;
-	if (mode == EX_WAIT)
+	if (!(mode & 1))
 		tmp = ex->pids;
-	tmp_pipe = ex->pipes;
-	ft_pipes_push(&(ex->pipes), ft_init_pipes());
-	if (ex->pipes == tmp_pipe)
-		return ;
-	if (ex->pipes->fd[0] == -1 || ex->pipes->fd[1] == -1)
-		return ;
-	fds[0] = node_fd[0];
-	fds[1] = ex->pipes->fd[1];
-	ft_exec_mux(tree->left, (int *) fds, ex, EX_PIPE);
-	fds[0] = ex->pipes->fd[0];
-	fds[1] = node_fd[1];
-	ft_exec_mux(tree->right, (int *) fds, ex, EX_PIPE);
+	ft_exec_mux(tree->left, node_fd, ex, EX_LPIPE);
+	if (mode & 1)
+	{
+		tmp_pipe = ex->pipes;
+		ft_pipes_push(&(ex->pipes), ft_init_pipes());
+		fds = (t_fd){tmp_pipe->fd[0], ex->pipes->fd[1]};
+		ft_exec_mux(tree->right, fds, ex, EX_RPIPE);
+		ft_del_pipe(tmp_pipe);
+		ex->pipes->next = NULL;
+	}
+	else
+	{
+		fds = (t_fd){ex->pipes->fd[0], node_fd.out};
+		ft_exec_mux(tree->right, fds, ex, EX_RPIPE);
+		ft_del_pipe(ft_pipes_pop(&(ex->pipes)));
+	}
 	ft_wait_pipeline(tmp, ex, mode);
 }
 
-void	ft_and_divider(t_node *tree, int *node_fd, t_executer *ex, t_mode mode)
+void	ft_and_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 {
 	pid_t	child;
 	int		err_code;
 
 	err_code = 0;
-	if (mode == EX_PIPE)
+	if (mode == EX_LPIPE)
+	{
+		ft_pipes_push(&(ex->pipes), ft_init_pipes());
+		node_fd.out = ex->pipes->fd[1];
+	}
+	if (mode & 1)
 	{
 		child = fork();
 		if (child == -1)
@@ -107,13 +115,18 @@ void	ft_and_divider(t_node *tree, int *node_fd, t_executer *ex, t_mode mode)
 		ft_exec_and(tree, node_fd, ex);
 }
 
-void	ft_or_divider(t_node *tree, int *node_fd, t_executer *ex, t_mode mode)
+void	ft_or_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 {
 	pid_t	child;
 	int		err_code;
 
 	err_code = 0;
-	if (mode == EX_PIPE)
+	if (mode == EX_LPIPE)
+	{
+		ft_pipes_push(&(ex->pipes), ft_init_pipes());
+		node_fd.out = ex->pipes->fd[1];
+	}
+	if (mode & 1)
 	{
 		child = fork();
 		if (child == -1)

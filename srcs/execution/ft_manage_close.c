@@ -6,29 +6,11 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 17:43:40 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 16:10:22 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:46:43 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_close_v(int nb, int fd, ...)
-{
-	va_list	files;
-	int		i;
-	int		curr;
-
-	i = 0;
-	close(fd);
-	va_start(files, fd);
-	while (i++ < nb)
-	{
-		curr = va_arg(files, int);
-		if (curr >= 0)
-			close(curr);
-	}
-	va_end(files);
-}
 
 void	ft_close_command(t_command *command)
 {

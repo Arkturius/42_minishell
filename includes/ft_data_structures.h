@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:05:54 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 19:22:18 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:00:03 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,12 @@ typedef struct s_executer
 	t_pipes	*pipes;
 	t_pid	*pids;
 }	t_executer;
+
+typedef struct s_fd
+{
+	int	in;
+	int	out;
+}	t_fd;
 
 /* T_TOKEN ****************************************************************** */
 

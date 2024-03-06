@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:16:25 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 18:55:04 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:47:47 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,9 @@ void	*ft_memchr(void *s, int c, size_t n);
 int		ft_memcmp(void *s1, void *s2, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_free_tab(void **tab);
+
+void	ft_close_v(int nb, int fd, ...);
+
 /* ************************************************************************** */
 
 /* PUT_FD ******************************************************************* */

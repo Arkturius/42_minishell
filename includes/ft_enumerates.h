@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:36:47 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/04 22:58:51 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:37:22 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ typedef enum e_quote_state
  */
 typedef enum e_mode
 {
-	EX_WAIT = 0,
-	EX_PIPE = 1
+	EX_LWAIT = 0b00,
+	EX_LPIPE = 0b01,
+	EX_RWAIT = 0b10,
+	EX_RPIPE = 0b11
 }	t_mode;
 
 /**

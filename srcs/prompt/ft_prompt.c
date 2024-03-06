@@ -77,7 +77,7 @@ t_error	ft_to_tree_exec(t_token **tokens, t_node **tree, t_envvar **envp)
 	t_executer	*exe;
 	t_pid		*towait;
 	int			err_code;
-	static int	base_fd[2] = {0, 1};
+	t_fd		base_fd;
 
 	*tree = ft_build_tree(*tokens, envp);
 	ft_clear_token_list(*tokens);
@@ -86,7 +86,8 @@ t_error	ft_to_tree_exec(t_token **tokens, t_node **tree, t_envvar **envp)
 		return (ERR_HDSTOP);
 	exe = ft_init_executer();
 	ft_signal_state(SIGHANDLER_IGN);
-	ft_exec_mux(*tree, (int *) base_fd, exe, EX_WAIT);
+	base_fd = (t_fd){0, 1};
+	ft_exec_mux(*tree, base_fd, exe, EX_LWAIT);
 	while (exe->pids)
 	{
 		towait = ft_pid_pop(&(exe->pids));

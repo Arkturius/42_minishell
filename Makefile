@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/06 00:31:24 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/06 19:00:58 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,7 @@ SRC_EXEC	:=	execution/ft_manage_close.c			\
 				execution/ft_exec_pipeline.c		\
 				execution/ft_exec_utils.c
 
-SRC_PROMPT	:=  prompt/prompt.c						\
+SRC_PROMPT	:=  prompt/ft_prompt.c					\
 				prompt/ft_manage_dquote.c			\
 				prompt/ft_holder.c
 
@@ -98,7 +98,6 @@ ALL_SRCS	:=	$(SRC_DATA) 						\
 				$(SRC_PROMPT)						\
 				$(SRC_EXEC)							\
 				$(SRC_SETUP)						\
-				global.c							\
 				minishell.c
 				
 SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)

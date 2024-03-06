@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:03:08 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/04 23:51:09 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 15:58:24 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
  * @param ex		Current t_executer.
  * @param mode		Execution mode.
 */
-void	ft_exec_mux(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
+void	ft_exec_mux(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
 
 /**
  * @brief			Execute a PIPE node.
@@ -33,7 +33,7 @@ void	ft_exec_mux(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
  * @param ex		Current t_executer.
  * @param mode		Execution mode.
 */
-void	ft_exec_pipe(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
+void	ft_exec_pipe(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
 
 /**
  * @brief			Divide AND execution, either forked or not.
@@ -43,7 +43,7 @@ void	ft_exec_pipe(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
  * @param ex		Current t_executer.
  * @param mode		Execution mode.
 */
-void	ft_and_divider(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
+void	ft_and_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
 
 /**
  * @brief			Execute a AND node.
@@ -52,7 +52,7 @@ void	ft_and_divider(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
  * @param node_fd	Fds for this node.
  * @param ex		Current t_executer.
 */
-int		ft_exec_and(t_node *tree, int *node_fd, t_executer *ex);
+int		ft_exec_and(t_node *tree, t_fd node_fd, t_executer *ex);
 
 /**
  * @brief			Divide OR execution, either forked or not.
@@ -62,7 +62,7 @@ int		ft_exec_and(t_node *tree, int *node_fd, t_executer *ex);
  * @param ex		Current t_executer.
  * @param mode		Execution mode.
 */
-void	ft_or_divider(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
+void	ft_or_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
 
 /**
  * @brief			Execute a OR node.
@@ -71,7 +71,7 @@ void	ft_or_divider(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
  * @param node_fd	Fds for this node.
  * @param ex		Current t_executer.
 */
-int		ft_exec_or(t_node *tree, int *node_fd, t_executer *ex);
+int		ft_exec_or(t_node *tree, t_fd node_fd, t_executer *ex);
 
 /**
  * @brief			Command handler for execution.
@@ -81,7 +81,7 @@ int		ft_exec_or(t_node *tree, int *node_fd, t_executer *ex);
  * @param ex		Current t_executer.
  * @param mode		Execution mode.
 */
-void	ft_cmd_handler(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
+void	ft_cmd_handler(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
 
 /**
  * @brief			Execute a t_command.
@@ -90,7 +90,7 @@ void	ft_cmd_handler(t_node *tree, int *node_fd, t_executer *ex, t_mode mode);
  * @param node_fd	Fds for this node.
  * @param ex		Current t_executer.
 */
-void	ft_exec_cmd(t_command *cmd, int *node_fd, t_executer *ex);
+void	ft_exec_cmd(t_command *cmd, t_fd node_fd, t_executer *ex, t_mode mode);
 
 /**
  * @brief			Handle WTERMSIG and WCOREDUMP returns.
@@ -127,7 +127,7 @@ void	ft_wait_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex);
  * 
  * @return			ERR_ERRORS if not a builtin cmd, ERR_NOERRS otherwise.
 */
-t_error	ft_builtin(t_command *cmd, int *fd, t_executer *ex, t_mode mode);
+t_error	ft_builtin(t_command *cmd, t_fd fd, t_executer *ex, t_mode mode);
 
 /**
  * @brief			Error handling before executing (or not) a t_command.
@@ -189,7 +189,7 @@ void	ft_fake_pid_child(int err_code, t_executer *ex);
  * @param cmd		t_command to redirect.
  * @param node_fd	Fds from t_node.
 */
-void	ft_process_redirs(t_command *cmd, int *node_fd);
+void	ft_process_redirs(t_command *cmd, t_fd node_fd);
 
 /* ************************************************************************** */
 

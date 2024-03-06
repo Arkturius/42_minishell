@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 16:59:54 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/04 23:36:35 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:59:20 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,5 @@ void	ft_del_pipe(t_pipes *p)
 	if (p->fd[1] > 2)
 		close(p->fd[1]);
 	free(p);
+	p = NULL;
 }

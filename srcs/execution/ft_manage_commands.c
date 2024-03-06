@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:42:43 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/05 00:23:40 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:36:10 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,10 @@ t_error	ft_command_updater(t_command *cmd)
 	while (tmp && *tmp)
 	{
 		if (ft_verify_wildcard(*tmp, QU_ZERO))
-			ft_replace_wildcard(tmp++);
-		else
-			ft_dequote_string(tmp++, QU_ZERO);
+			ft_replace_wildcard(tmp);
+		else if (ft_strncmp(cmd->args[0], "echo", 5))
+			ft_dequote_string(tmp, QU_ZERO);
+		tmp++;
 	}
 	ft_path_updater(cmd);
 	if (!cmd->path && !cmd->redirs)
