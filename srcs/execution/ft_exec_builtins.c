@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:50:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 19:19:29 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:42:40 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 extern int	g_exit_code;
 
-void	ft_pipe_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex)
+void	ft_pipe_builtin(\
+int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 {
 	pid_t	child;
 	int		ret;
@@ -30,6 +31,7 @@ void	ft_pipe_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex)
 			free(ex);
 			ex = NULL;
 		}
+		ft_process_redirs(cmd, node_fd);
 		ret = f(cmd);
 		ft_close_executer(ex);
 		ft_close_tree_rec(ft_tree_holder(0, NULL));
@@ -39,14 +41,17 @@ void	ft_pipe_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex)
 			ft_fork_exit(ex);
 		exit(ret);
 	}
-	ft_close_command(cmd);
 	ft_pid_push(&(ex->pids), ft_init_pid(child));
 }
 
-void	ft_wait_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex)
+void	ft_wait_builtin(\
+int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 {
-	int	err_code;
+	int		err_code;
+	t_fd	stds;
 
+	stds = (t_fd){dup(STDIN_FILENO), dup(STDOUT_FILENO)};
+	ft_process_redirs(cmd, node_fd);
 	if (f == &ft_exit && ft_tab_len(cmd->args) <= 2)
 	{
 		ft_close_tree_rec(ft_tree_holder(0, NULL));
@@ -54,20 +59,22 @@ void	ft_wait_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex)
 		free(ex);
 		ft_dprintf(2, "exit\n");
 	}
+	if (f == &ft_exit)
+	{
+		cmd->infile = stds.in;
+		cmd->outfile = stds.out;
+	}
 	err_code = f(cmd);
+	ft_process_redirs(NULL, stds);
+	ft_close_v(2, stds.in, stds.out);
 	ft_fake_pid_child(err_code, ex);
-	ft_close_command(cmd);
 }
 
-t_error	ft_builtin_checker(t_command *cmd, t_fd fd)
+t_error	ft_builtin_checker(t_command *cmd, t_executer *ex)
 {
 	char	**tmp;
 
 	tmp = cmd->args;
-	if (cmd->infile == STDIN_FILENO && fd.in != STDIN_FILENO)
-		cmd->infile = fd.in;
-	if (cmd->outfile == STDOUT_FILENO && fd.out != STDOUT_FILENO)
-		cmd->outfile = fd.out;
 	if (!ft_strncmp(*tmp, "echo", 5))
 		return (ERR_NOERRS);
 	tmp++;
@@ -75,10 +82,12 @@ t_error	ft_builtin_checker(t_command *cmd, t_fd fd)
 		return (ERR_NOERRS);
 	while (*tmp && **tmp != '-')
 		tmp++;
+	if (*tmp && !ft_strncmp(*(cmd->args), "exit", 5) && ft_is_numeric(*tmp))
+		return (ERR_NOERRS);
 	if (*tmp)
 	{
 		ft_error_message(ERR_INVOPT, *tmp);
-		g_exit_code = 125;
+		ft_fake_pid_child(125, ex);
 		return (ERR_INVOPT);
 	}
 	return (ERR_NOERRS);
@@ -100,15 +109,12 @@ t_error	ft_builtin(t_command *cmd, t_fd fd, t_executer *ex, t_mode mode)
 	free(trim);
 	if (!*tmp)
 		return (ERR_ERRORS);
-	if (mode == EX_LPIPE)
-		ft_pipes_push(&(ex->pipes), ft_init_pipes());
-	if (mode == EX_LPIPE)
-		fd.out = ex->pipes->fd[1];
-	if (ft_builtin_checker(cmd, fd))
+	if (ft_builtin_checker(cmd, ex))
 		return (ERR_NOERRS);
 	if (mode & 1)
-		ft_pipe_builtin(builtins[tmp - builtins_str], cmd, ex);
+		ft_pipe_builtin(builtins[tmp - builtins_str], cmd, ex, fd);
 	else
-		ft_wait_builtin(builtins[tmp - builtins_str], cmd, ex);
+		ft_wait_builtin(builtins[tmp - builtins_str], cmd, ex, fd);
+	ft_close_command(cmd);
 	return (ERR_NOERRS);
 }

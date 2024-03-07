@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:02:28 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/05 22:21:34 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:19:35 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_error	ft_file_checker(t_command *cmd, char **file)
 	ft_replace_vars(*cmd->envp, file, QU_ZERO);
 	if (ft_verify_wildcard(*file, QU_ZERO))
 		ft_replace_wildcard(file);
-	files = ft_split(*file, ' ');
+	files = ft_quoted_split(*file, " ");
 	if (ft_tab_len(files) > 1)
 	{
 		ft_error_message(ERR_AMBRED, var);
@@ -54,9 +54,10 @@ t_error	ft_file_checker(t_command *cmd, char **file)
 		ft_free_tab((void **) files);
 		return (ERR_AMBRED);
 	}
+	ft_dequote_string(file, QU_ZERO);
 	free(var);
 	ft_free_tab((void **) files);
-	return (ERR_NOERRS);
+	return (ft_check_access(*file, R_OK));
 }
 
 t_error	ft_open_file(t_command *cmd, char *file, int mode)
@@ -67,7 +68,7 @@ t_error	ft_open_file(t_command *cmd, char *file, int mode)
 		return (ERR_AMBRED);
 	if (mode == OPEN_READ)
 		fd = &(cmd->infile);
-	else
+	if ((mode == OPEN_CREATE || mode == OPEN_APPEND))
 		fd = &(cmd->outfile);
 	if (*fd > 2)
 		close(*fd);
@@ -97,7 +98,7 @@ t_error	ft_open_outputs(t_command *cmd)
 	op = ERR_NOERRS;
 	while (tmp && cmd->outfile != OP_FILEKO && op == ERR_NOERRS)
 	{
-		if (tmp->type == RD_INFILES && access(tmp->file, R_OK))
+		if (tmp->type == RD_INFILES && ft_check_access(tmp->file, F_OK))
 			break ;
 		if (tmp->type == RD_OUTPUTS)
 			op = ft_open_file(cmd, ft_strdup(tmp->file), OPEN_CREATE);

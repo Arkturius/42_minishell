@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:48:51 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 15:59:31 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:42:56 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,20 @@ void	ft_fake_pid_child(int err_code, t_executer *ex)
 
 void	ft_process_redirs(t_command *cmd, t_fd node_fd)
 {
-	int	fds[2];
+	t_fd	fds;
 
-	fds[0] = node_fd.in;
-	fds[1] = node_fd.out;
-	if (cmd->infile != STDIN_FILENO)
-		fds[0] = cmd->infile;
-	if (cmd->outfile != STDOUT_FILENO)
-		fds[1] = cmd->outfile;
-	if (fds[0] != STDIN_FILENO)
-		dup2(fds[0], STDIN_FILENO);
-	if (fds[1] != STDOUT_FILENO)
-		dup2(fds[1], STDOUT_FILENO);
+	fds = (t_fd){node_fd.in, node_fd.out};
+	if (cmd)
+	{
+		if (cmd->infile != STDIN_FILENO)
+			fds.in = cmd->infile;
+		if (cmd->outfile != STDOUT_FILENO)
+			fds.out = cmd->outfile;
+	}
+	if (fds.in != STDIN_FILENO)
+		dup2(fds.in, STDIN_FILENO);
+	if (fds.out != STDOUT_FILENO)
+		dup2(fds.out, STDOUT_FILENO);
 	ft_close_command(cmd);
 }
 
@@ -59,6 +61,22 @@ void	ft_command_exit(int err_code)
 		ft_dprintf(2, "\n");
 		g_exit_code = 130;
 	}
+}
+
+t_error	ft_check_access(char *filename, int mode)
+{
+	char	*name;
+
+	name = ft_strdup(filename);
+	if (!name)
+		return (ERR_FAILED);
+	ft_dequote_string(&name, QU_ZERO);
+	if (access(name, mode))
+	{
+		ft_error_message(ERR_NOPERM, name);
+		return (ERR_FAILED);
+	}
+	return (ERR_NOERRS);
 }
 
 void	ft_fork_exit(t_executer *ex)

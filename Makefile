@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/06 19:00:58 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/07 14:52:13 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,7 +141,7 @@ $(OBJS_DIR)/%.o: %.c
 	if [ $(CMP) -eq '1' ]; then \
 		printf "\n"; \
 	fi;
-	printf "$(LINE_CLR)$(WHITE)  🔄 $(NAME):\t$(CMP)/$(FILE) \t$(BWHITE)$<$(RESET) $(GREEN)compiling...$(RESET)"
+	printf "$(LINE_CLR)$(WHITE)  🔄 $(NAME): $(CMP)/$(FILE)\t$(GREEN)compiling...$(RESET)\t$(BWHITE)$<$(RESET)"
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $^
 	@$(eval CMP=$(shell echo $$(($(CMP)+1))))
 	if [ $(CMP) -gt $(FILE) ]; then \

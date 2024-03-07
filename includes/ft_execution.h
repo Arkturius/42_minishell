@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:03:08 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 15:58:24 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:41:56 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_cmd_handler(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
  * @param node_fd	Fds for this node.
  * @param ex		Current t_executer.
 */
-void	ft_exec_cmd(t_command *cmd, t_fd node_fd, t_executer *ex, t_mode mode);
+void	ft_exec_cmd(t_command *cmd, t_fd node_fd, t_executer *ex);
 
 /**
  * @brief			Handle WTERMSIG and WCOREDUMP returns.
@@ -106,7 +106,8 @@ void	ft_command_exit(int err_code);
  * @param cmd		t_command pointer with command metadata.
  * @param ex		Current t_executer.
 */
-void	ft_pipe_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex);
+void	ft_pipe_builtin(\
+int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd);
 
 /**
  * @brief			Execute a builtin when mode is EX_WAIT.
@@ -115,7 +116,8 @@ void	ft_pipe_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex);
  * @param cmd		t_command pointer with command metadata.
  * @param ex		Current t_executer.
 */
-void	ft_wait_builtin(int (*f)(t_command *), t_command *cmd, t_executer *ex);
+void	ft_wait_builtin(\
+int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd);
 
 /**
  * @brief			Handle builtin execution.
@@ -158,6 +160,17 @@ t_error	ft_command_updater(t_command *cmd);
  * 
 */
 t_error	ft_command_checker(t_command *cmd, t_executer *ex);
+
+/**
+ * @brief			Check access to a file in a certain mode.
+ * 
+ * @param filename	File name (unquoted).
+ * @param mode		Access mode.
+ * 
+ * @return			ERR_FAILED if an error occured or if access denied,
+ * 					ERR_NOERRS otherwise.
+*/
+t_error	ft_check_access(char *filename, int mode);
 
 /* UTILS ******************************************************************** */
 

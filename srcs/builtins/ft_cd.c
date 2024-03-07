@@ -78,12 +78,8 @@ int	ft_cd(t_command *cmd)
 		return (ERR_FAILED);
 	if (vars[2])
 		ft_set_var(cmd->envp, "OLDPWD", ft_strdup(vars[2]->values[0]));
-	else
-		ft_error_message(ERR_NOTSET, "OLDPWD");
 	newdir = ft_get_pwd();
 	if (newdir)
 		ft_set_var(cmd->envp, "PWD", newdir);
-	else
-		ft_error_message(ERR_NOTSET, "PWD");
 	return (ERR_NOERRS);
 }

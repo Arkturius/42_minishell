@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:45:23 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 16:55:54 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:16:50 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,11 @@ void	ft_connect_input(t_command *cmd, int hd_last)
 	}
 }
 
-void	ft_exec_cmd(t_command *cmd, t_fd node_fd, t_executer *ex, t_mode mode)
+void	ft_exec_cmd(t_command *cmd, t_fd node_fd, t_executer *ex)
 {
 	char	**env;
 	pid_t	child;
 
-	if (mode == EX_LPIPE)
-	{
-		ft_pipes_push(&(ex->pipes), ft_init_pipes());
-		node_fd.out = ex->pipes->fd[1];
-	}
 	child = fork();
 	if (child == -1)
 		return ;
@@ -104,6 +99,11 @@ void	ft_cmd_handler(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 
 	err_str = NULL;
 	cmd = tree->command;
+	if (mode == EX_LPIPE)
+	{
+		ft_pipes_push(&(ex->pipes), ft_init_pipes());
+		node_fd.out = ex->pipes->fd[1];
+	}
 	if (ft_command_startup(cmd, ex) || ft_command_checker(cmd, ex))
 		return ;
 	if (!ft_builtin(cmd, node_fd, ex, mode))
@@ -116,5 +116,5 @@ void	ft_cmd_handler(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 		ft_error_message(ERR_NOTCMD, err_str);
 		return ;
 	}
-	ft_exec_cmd(cmd, node_fd, ex, mode);
+	ft_exec_cmd(cmd, node_fd, ex);
 }

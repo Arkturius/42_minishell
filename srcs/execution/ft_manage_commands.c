@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:42:43 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 18:36:10 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:38:19 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_args_updater(t_command *cmd)
 			ft_replace_vars(*cmd->envp, tmp, QU_ZERO);
 			if (**tmp)
 			{
-				raw = ft_split(*tmp, ' ');
+				raw = ft_quoted_split(*tmp, " ");
 				ft_strtabjoin(&new_args, raw);
 			}
 			tmp++;
@@ -85,7 +85,7 @@ t_error	ft_command_updater(t_command *cmd)
 	{
 		if (ft_verify_wildcard(*tmp, QU_ZERO))
 			ft_replace_wildcard(tmp);
-		else if (ft_strncmp(cmd->args[0], "echo", 5))
+		if (!ft_quote_error(*tmp, NULL, QU_ZERO))
 			ft_dequote_string(tmp, QU_ZERO);
 		tmp++;
 	}

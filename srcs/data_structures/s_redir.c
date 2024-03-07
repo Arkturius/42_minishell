@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:58:08 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/01 18:53:01 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:45:14 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_redir	*ft_init_redir(t_token *tmp)
 	else if (!ft_strncmp(tmp->str, "<", 2))
 		new_redir->type = RD_INFILES;
 	new_redir->file = ft_strdup(tmp->next->str);
-	ft_dequote_string(&(new_redir->file), QU_ZERO);
 	new_redir->next = NULL;
 	return (new_redir);
 }
