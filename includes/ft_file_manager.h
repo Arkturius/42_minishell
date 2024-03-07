@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:02:22 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/05 22:21:04 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:09:11 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_error		ft_open_heredocs(t_command *cmd);
  * @return			ERR_INVFDS if fd error, ERR_AMBRED if ambiguous redirection
  * 					ERR_NOERRS otherwise.
 */
-t_error		ft_open_file(t_command *cmd, char *file, int mode);
+t_error		ft_open_file(t_command *cmd, char **file, int mode);
 
 /**
  * @brief			Open output files for one command.

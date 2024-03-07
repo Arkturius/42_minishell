@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:50:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 15:42:40 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:48:42 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 
 	stds = (t_fd){dup(STDIN_FILENO), dup(STDOUT_FILENO)};
 	ft_process_redirs(cmd, node_fd);
-	if (f == &ft_exit && ft_tab_len(cmd->args) <= 2)
+	if (f == &ft_exit && (ft_tab_len(cmd->args) <= 2 \
+						|| !ft_is_numeric(cmd->args[1])))
 	{
 		ft_close_tree_rec(ft_tree_holder(0, NULL));
 		ft_close_executer(ex);
