@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:47:41 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 19:26:32 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:05:23 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ t_node	*ft_cmd_token(t_token **tokens, t_envvar **env, t_token *tmp)
 
 void	ft_brace_tree(t_token **tk, t_node **tree, t_envvar **env)
 {
-	t_node		*test;
+	t_node		*subtree;
 	int			level;
 
-	test = ft_build_tree((*tk)->next, env);
+	subtree = ft_build_tree((*tk)->next, env);
 	level = 0;
 	if (!tree)
-		*tree = test;
+		*tree = subtree;
 	else
-		ft_insert_child(tree, test, RIGHT);
+		ft_insert_child(tree, subtree, RIGHT);
 	(*tk) = (*tk)->next;
 	while ((*tk) && (!((*tk)->type & TK_BRACES && \
 			!ft_strncmp((*tk)->str, ")", 2)) || level))
@@ -58,28 +58,39 @@ void	ft_brace_tree(t_token **tk, t_node **tree, t_envvar **env)
 	(*tk) = (*tk)->next;
 }
 
-void	ft_connect_ops(t_token **tk, t_node **tree, t_envvar **env)
+t_node	*ft_extract_pipeline(t_token **tokens, t_envvar **env)
 {
-	t_node	*next;
+	t_node	*tree;
 
-	next = NULL;
-	if ((*tk)->type & TK_BINOPS)
+	tree = NULL;
+	if (!tokens)
+		return (NULL);
+	while (*tokens)
 	{
-		next = ft_build_tree((*tk)->next, env);
-		ft_associate(tree, next, NULL, ft_dup_token(*tk));
+		if ((*tokens)->type & (TK_STRING | TK_REDIRS))
+		{
+			if (!tree)
+				tree = ft_cmd_token(tokens, env, *tokens);
+			else
+				ft_insert_child(&tree, ft_cmd_token(tokens, env, *tokens), RIGHT);
+		}
+		if (*tokens && (*tokens)->type & (TK_BRACES))
+		{
+			if (!ft_strncmp((*tokens)->str, "(", 2))
+				ft_brace_tree(tokens, &tree, env);
+		}
+		if (!*tokens || !((*tokens)->type & TK_PIPEXS))
+			return (tree);
+		ft_insert_parent(&tree, ft_init_node(NULL, ft_dup_token(*tokens)), LEFT);
+		(*tokens) = (*tokens)->next;
 	}
-	else if ((*tk)->type & TK_PIPEXS)
-	{
-		ft_insert_parent(tree, ft_init_node(NULL, ft_dup_token(*tk)), LEFT);
-		(*tk) = (*tk)->next;
-	}
+	return (tree);
 }
 
 t_node	*ft_build_tree(t_token *tokens, t_envvar **env)
 {
-	t_node			*tree;
-	t_token_type	tmp;
-
+	t_node		*tree;
+	
 	tree = NULL;
 	ft_update_env(env);
 	while (tokens)
@@ -91,15 +102,24 @@ t_node	*ft_build_tree(t_token *tokens, t_envvar **env)
 			else
 				return (tree);
 		}
-		else if (tokens->type & (TK_STRING | TK_REDIRS))
-			ft_insert_child(&tree, ft_cmd_token(&tokens, env, tokens), RIGHT);
-		if (!tokens)
-			return (tree);
-		tmp = tokens->type;
-		if (tmp & (TK_BINOPS | TK_PIPEXS))
-			ft_connect_ops(&tokens, &tree, env);
-		if (tmp & TK_BINOPS)
-			return (tree);
+		else if (tokens->type & TK_BINOPS)
+		{
+			t_token *newtok = ft_dup_token(tokens);
+			tokens = tokens->next;
+			ft_associate(&tree, ft_extract_pipeline(&tokens, env), NULL, newtok);
+		}
+		else if (tokens->type & TK_PIPEXS)
+		{
+			ft_insert_parent(&tree, ft_init_node(NULL, ft_dup_token(tokens)), LEFT);
+			tokens = tokens->next;
+		}
+		if (tokens && tokens->type & (TK_STRING | TK_REDIRS))
+		{
+			if (tree && tree->left)
+				ft_insert_child(&tree, ft_cmd_token(&tokens, env, tokens), RIGHT);
+			else
+				ft_insert_child(&tree, ft_extract_pipeline(&tokens, env), LEFT);
+		}
 	}
 	return (tree);
 }

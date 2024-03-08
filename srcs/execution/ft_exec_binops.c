@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:48:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 17:00:12 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:24:11 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	ft_exec_and(t_node *tree, t_fd node_fd, t_executer *ex)
 
 	if (node_fd.in != STDIN_FILENO)
 		dup2(node_fd.in, STDIN_FILENO);
+	if (node_fd.out != STDOUT_FILENO)
+		dup2(node_fd.out, STDOUT_FILENO);
 	ft_exec_mux(tree->left, node_fd, ex, EX_LWAIT);
 	err_code = ft_wait_and_or(ex);
 	g_exit_code = err_code;
@@ -48,6 +50,8 @@ int	ft_exec_and(t_node *tree, t_fd node_fd, t_executer *ex)
 		ft_exec_mux(tree->right, node_fd, ex, EX_RWAIT);
 		g_exit_code = ft_wait_and_or(ex);
 	}
+	else
+		ft_fake_pid_child(g_exit_code, ex);
 	return (g_exit_code);
 }
 
@@ -57,6 +61,8 @@ int	ft_exec_or(t_node *tree, t_fd node_fd, t_executer *ex)
 
 	if (node_fd.in != STDIN_FILENO)
 		dup2(node_fd.in, STDIN_FILENO);
+	if (node_fd.out != STDOUT_FILENO)
+		dup2(node_fd.out, STDOUT_FILENO);
 	ft_exec_mux(tree->left, node_fd, ex, EX_LWAIT);
 	err_code = ft_wait_and_or(ex);
 	g_exit_code = err_code;
@@ -65,5 +71,7 @@ int	ft_exec_or(t_node *tree, t_fd node_fd, t_executer *ex)
 		ft_exec_mux(tree->right, node_fd, ex, EX_RWAIT);
 		g_exit_code = ft_wait_and_or(ex);
 	}
+	else
+		ft_fake_pid_child(g_exit_code, ex);
 	return (g_exit_code);
 }

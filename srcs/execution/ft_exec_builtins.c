@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:50:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 17:48:42 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:27:58 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ void	ft_wait_builtin(\
 int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 {
 	int		err_code;
-	t_fd	stds;
-
-	stds = (t_fd){dup(STDIN_FILENO), dup(STDOUT_FILENO)};
 	ft_process_redirs(cmd, node_fd);
 	if (f == &ft_exit && (ft_tab_len(cmd->args) <= 2 \
 						|| !ft_is_numeric(cmd->args[1])))
@@ -60,14 +57,7 @@ int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 		free(ex);
 		ft_dprintf(2, "exit\n");
 	}
-	if (f == &ft_exit)
-	{
-		cmd->infile = stds.in;
-		cmd->outfile = stds.out;
-	}
 	err_code = f(cmd);
-	ft_process_redirs(NULL, stds);
-	ft_close_v(2, stds.in, stds.out);
 	ft_fake_pid_child(err_code, ex);
 }
 

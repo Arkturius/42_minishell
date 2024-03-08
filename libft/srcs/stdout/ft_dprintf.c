@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:04:49 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 13:04:01 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:28:25 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	ft_format(int fd, va_list args, char c)
 		return (ft_putnbr_hex_fd(fd, va_arg(args, unsigned int), 0b00, 0));
 	else if (c == 'X')
 		return (ft_putnbr_hex_fd(fd, va_arg(args, unsigned int), 0b01, 0));
+	else if (c == 'S')
+		return (ft_putstrtab_fd(fd, va_arg(args, char **)));
 	else if (c == '%')
 		return (write(fd, "%", 1));
 	return (0);
@@ -42,7 +44,7 @@ int	ft_printer(int fd, const char *format, va_list args)
 	len = 0;
 	while (*tmp)
 	{
-		if (*tmp == '%' && ft_strchr("cspdiuxX%", *(tmp + 1)))
+		if (*tmp == '%' && ft_strchr("cspdiuxXS%", *(tmp + 1)))
 			len += ft_format(fd, args, *(tmp++ + 1));
 		else if (*tmp != '%')
 			len += ft_putchar_fd(fd, *tmp);

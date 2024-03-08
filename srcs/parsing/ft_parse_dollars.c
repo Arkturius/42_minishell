@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:19:03 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/03 18:47:25 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:10:47 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,12 @@ void	ft_insert_var(t_envvar *vars, char *start, char ***new, t_qstate qs)
 	if (!var_ptr)
 		ft_strapp(new, ft_strdup(""));
 	else
+		// ft_strapp(new, ft_strjoin("\\", "\\", ft_get_varstring(var_ptr, 0, 0), 0b100));
 		ft_strapp(new, ft_get_varstring(var_ptr, 0, 0));
 	free(name);
 }
 
-void	ft_replace_vars(t_envvar *vars, char **str, t_qstate qs)
+char	**ft_replace_vars(t_envvar *vars, char **str, t_qstate qs)
 {
 	int		len;
 	char	*tmp;
@@ -80,11 +81,13 @@ void	ft_replace_vars(t_envvar *vars, char **str, t_qstate qs)
 	tmp = *str;
 	new = NULL;
 	if (!tmp)
-		return ;
+		return (new);
 	while (*tmp)
 	{
 		len = ft_strcspn(tmp, "$");
 		ft_strapp(&new, ft_strndup(tmp, len));
+		if (!ft_strchr(new[ft_tab_len(new) - !!ft_tab_len(new)], '*'))
+			ft_dequote_string(&(new[ft_tab_len(new) - !!ft_tab_len(new)]), qs);
 		ft_quoted_skip(&tmp, &len, &qs);
 		if (!*tmp)
 			break ;
@@ -95,5 +98,6 @@ void	ft_replace_vars(t_envvar *vars, char **str, t_qstate qs)
 		tmp += ft_var_len(tmp);
 	}
 	free(*str);
-	*str = ft_strsjoin(new, NULL, 0b01);
+	*str = ft_strsjoin(new, NULL, 0b00);
+	return (new);
 }

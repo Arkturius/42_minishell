@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/07 14:31:47 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/08 14:26:32 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ SRC_MEM		:=	memory/ft_bzero.c 					\
 
 # PRINT
 SRC_PRINT	:=	stdout/ft_displays.c				\
+				stdout/ft_ptrdisplays.c				\
 				stdout/ft_putendl_fd.c				\
 				stdout/ft_itoa.c					\
 				stdout/ft_dprintf.c

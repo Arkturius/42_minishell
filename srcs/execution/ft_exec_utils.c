@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:48:51 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 17:58:02 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:20:39 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ t_error	ft_check_access(char *filename, int mode)
 	name = ft_strdup(filename);
 	if (!name)
 		return (ERR_FAILED);
-	ft_dequote_string(&name, QU_ZERO);
 	if (access(name, F_OK))
 	{
 		ft_error_message(ERR_NOFORD, name);

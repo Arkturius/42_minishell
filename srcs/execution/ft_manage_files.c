@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:02:28 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 18:08:49 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:17:22 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ t_error	ft_file_checker(t_command *cmd, char **file, int mode)
 	char	*var;
 
 	var = ft_strdup(*file);
-	ft_replace_vars(*cmd->envp, file, QU_ZERO);
+	if (ft_strchr(*file, '$'))
+		ft_replace_vars(*cmd->envp, file, QU_ZERO);
 	if (ft_verify_wildcard(*file, QU_ZERO))
 		ft_replace_wildcard(file);
 	files = ft_quoted_split(*file, " ");
@@ -50,7 +51,6 @@ t_error	ft_file_checker(t_command *cmd, char **file, int mode)
 	{
 		ft_error_message(ERR_AMBRED, var);
 		free(var);
-		free(*file);
 		ft_free_tab((void **) files);
 		return (ERR_AMBRED);
 	}

@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:16:25 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 14:48:49 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:26:50 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ size_t	ft_putstr_fd(int fd, char *str);
 size_t	ft_putnbr_hex_fd(int fd, unsigned long nb, int flags, int depth);
 size_t	ft_putnbr_fd(int fd, long nb);
 size_t	ft_putunbr_fd(int fd, unsigned long nb);
+size_t	ft_putstrtab_fd(int fd, char **tab);
 void	ft_putendl_fd(char *s, int fd);
 
 int		ft_printf(const char *format, ...);
