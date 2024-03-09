@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 07:14:12 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/05 00:23:09 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 20:45:09 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,9 @@ t_envvar	*ft_update_env(t_envvar **env);
  * 
  * @param env		Empty linked list adress.
  * @param argv		String array argv.
+ * @param i			Iterator from ms_setup_env
 */
-void		ft_create_env(t_envvar **env, char **argv);
+void		ft_create_env(t_envvar **env, char **argv, int i);
 
 /**
  * @brief			Manage directory change.

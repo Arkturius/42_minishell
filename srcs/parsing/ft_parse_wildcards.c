@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:31:16 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/08 15:23:24 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:40:00 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ void	ft_replace_wildcard(char **str)
 	char	*deq;
 
 	deq = ft_strdup(*str);
-	ft_dprintf(2, "\033[32;49;3;1m%s\033[0m\n", *str);
 	ft_dequote_string(&deq, QU_ZERO);
 	files = ft_wildcard_array(deq);
 	free(deq);

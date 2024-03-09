@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:55:34 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/04 23:27:48 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 20:11:26 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_is_token(char *str, t_qstate qs)
 {
 	char		**tmp;
-	static char	*tokens[11] = {" ", "(", ")", "||", "&&", \
+	static char	*tokens[12] = {" ", ";", "(", ")", "||", "&&", \
 								"|", ">>", ">", "<<", "<", NULL};
 
 	tmp = tokens;
@@ -34,7 +34,8 @@ t_token_type	ft_ttyper(char *str, t_qstate qs)
 		return (TK_STRING);
 	if (!ft_strncmp(str, "(", 1) || !ft_strncmp(str, ")", 1))
 		return (TK_BRACES);
-	if (!ft_strncmp(str, "||", 2) || !ft_strncmp(str, "&&", 2))
+	if (!ft_strncmp(str, "||", 2) || !ft_strncmp(str, "&&", 2) \
+		|| !ft_strncmp(str, ";", 1))
 		return (TK_BINOPS);
 	if (!ft_strncmp(str, "|", 1))
 		return (TK_PIPEXS);

@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:45:23 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 20:16:50 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 20:58:53 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ t_error	ft_command_checker(t_command *cmd, t_executer *ex)
 	if (access(cmd->path, F_OK))
 		return (ERR_NOERRS);
 	stat(cmd->path, &stat_s);
-	if (!S_ISREG(stat_s.st_mode))
+	if (*cmd->path != '.' && (!ft_strchr(cmd->path, '/')) \
+		&& !S_ISREG(stat_s.st_mode))
 	{
 		if (S_ISFIFO(stat_s.st_mode))
 			ft_error_message(ERR_NOPERM, cmd->path);
@@ -108,7 +109,7 @@ void	ft_cmd_handler(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 		return ;
 	if (!ft_builtin(cmd, node_fd, ex, mode))
 		return ;
-	if (access(cmd->path, F_OK))
+	if (access(cmd->path, F_OK) || access(cmd->path, X_OK))
 	{
 		ft_fake_pid_child(127, ex);
 		if (cmd->args && *cmd->args)

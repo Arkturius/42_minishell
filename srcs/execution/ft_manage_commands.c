@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:42:43 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/08 17:17:10 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 20:58:34 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,16 @@ void	ft_args_updater(t_command *cmd)
 	{
 		if (ft_strchr(*tmp, '$'))
 		{
-			raw = ft_replace_vars(*cmd->envp, tmp, QU_ZERO);
-			if (ft_verify_wildcard(*tmp, QU_ZERO))
-				ft_replace_wildcard(tmp);
-			// if (**tmp)
-			// {
-			// 	raw = ft_quoted_split(*tmp, " ");
-			// 	ft_strtabjoin(&new_args, raw);
-			// }
-			ft_strtabjoin(&new_args, raw);
+			raw = ft_replace_vars(*cmd->envp, tmp, QU_ZERO, 1);
+			ft_strapp(&new_args, ft_strsjoin(raw, NULL, 0b01));
 			tmp++;
 			continue ;
 		}
-		if (ft_verify_wildcard(*tmp, QU_ZERO))
-			ft_replace_wildcard(tmp);
+		if (ft_strncmp(*(cmd->args), "export", 7))
+		{
+			if (ft_verify_wildcard(*tmp, QU_ZERO))
+				ft_replace_wildcard(tmp);
+		}
 		ft_dequote_string(tmp, QU_ZERO);
 		ft_strapp(&new_args, ft_strdup(*(tmp++)));
 	}
@@ -71,18 +67,16 @@ void	ft_args_updater(t_command *cmd)
 	cmd->args = new_args;
 }
 
-void	ft_path_updater(t_command *cmd)
-{
-	free(cmd->path);
-	cmd->path = NULL;
-	if (cmd->args && *cmd->args)
-		cmd->path = ft_get_path(*cmd->args, *(cmd->envp));
-}
-
 t_error	ft_command_updater(t_command *cmd)
 {
 	ft_args_updater(cmd);
-	ft_path_updater(cmd);
+	if (cmd->args && *cmd->args && \
+		**cmd->args != '.' && !ft_strchr(*cmd->args, '/'))
+	{
+		free(cmd->path);
+		cmd->path = NULL;
+		cmd->path = ft_get_path(*cmd->args, *(cmd->envp));
+	}
 	if (!cmd->path && !cmd->redirs)
 		return (ERR_NOTCMD);
 	return (ERR_NOERRS);

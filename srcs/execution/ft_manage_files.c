@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:02:28 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/08 17:17:22 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:40:38 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ t_error	ft_file_checker(t_command *cmd, char **file, int mode)
 
 	var = ft_strdup(*file);
 	if (ft_strchr(*file, '$'))
-		ft_replace_vars(*cmd->envp, file, QU_ZERO);
-	if (ft_verify_wildcard(*file, QU_ZERO))
-		ft_replace_wildcard(file);
+		ft_replace_vars(*cmd->envp, file, QU_ZERO, 0);
 	files = ft_quoted_split(*file, " ");
 	if (ft_tab_len(files) > 1)
 	{

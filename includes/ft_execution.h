@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:03:08 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 15:41:56 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:27:14 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,25 @@ void	ft_exec_mux(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
  * @param mode		Execution mode.
 */
 void	ft_exec_pipe(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
+
+/**
+ * @brief			Divide SC (;) execution, either forked or not.
+ * 
+ * @param tree		Node to execute.
+ * @param node_fd	Fds for this node.
+ * @param ex		Current t_executer.
+ * @param mode		Execution mode.
+*/
+void	ft_sc_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
+
+/**
+ * @brief			Execute a Semicolon node.
+ * 
+ * @param tree		Node to execute.
+ * @param node_fd	Fds for this node.
+ * @param ex		Current t_executer.
+*/
+int		ft_exec_semicolon(t_node *tree, t_fd node_fd, t_executer *ex);
 
 /**
  * @brief			Divide AND execution, either forked or not.
@@ -182,16 +201,9 @@ t_error	ft_check_access(char *filename, int mode);
 void	ft_args_updater(t_command *cmd);
 
 /**
- * @brief			Updates t_command path.
+ * @brief			Fork a process that hold error code from exec errors.
  * 
- * @param cmd		t_command to update.
-*/
-void	ft_path_updater(t_command *cmd);
-
-/**
- * @brief			Updates t_command path.
- * 
- * @param cmd		t_command to update.
+ * @param err_code	error code to transmit.
  * @param ex		Current t_executer.
 */
 void	ft_fake_pid_child(int err_code, t_executer *ex);

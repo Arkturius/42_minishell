@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:01:13 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/07 14:52:42 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:06:57 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,42 @@ char	*ft_get_temp_file(char *head, int size)
 	return (ft_strjoin(head, tmp, "-", 0b10));
 }
 
+int	ft_launch_single_command(char *line, t_envvar **envp)
+{
+	int			first;
+	t_token		*tokens;
+	t_node		*tree;
+
+	tokens = NULL;
+	tree = NULL;
+	first = 0;
+	if (!*line)
+		return (g_exit_code);
+	if (ft_to_tokens(&tokens, line, envp) || !tokens)
+		return (g_exit_code);
+	if (ft_to_tree_exec(&tokens, &tree, envp))
+		return (g_exit_code);
+	ft_close_tree_rec(tree);
+	ft_clear_tree(tree);
+	ft_clear_env(*envp);
+	return (g_exit_code);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_envvar	*env;
 
 	rl_catch_signals = 0;
-	if (argc > 1)
-	{
-		ft_error_message(ERR_INVOPT, argv[1]);
-		exit(ERR_FAILED);
-	}
 	env = ft_setup_env(argv, envp);
+	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	{
+		ft_signal_state(SIGHANDLER_INT);
+		g_exit_code = ft_launch_single_command(ft_strdup(argv[2]), &env);
+		exit(g_exit_code);
+	}
 	ft_print_logo(env);
 	ft_signal_state(SIGHANDLER_INT);
-	while (42 == 42)
+	while (42)
 	{
 		ft_update_env(&env);
 		ft_tree_holder(1, NULL);

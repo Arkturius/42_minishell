@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:07:11 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/05 00:29:59 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:25:38 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_command	*ft_init_command(t_redir *redirs, char **args, t_envvar **envp)
 	new_command->redirs = redirs;
 	new_command->path = NULL;
 	if (args)
-		new_command->path = ft_get_path(*args, *envp);
+		new_command->path = ft_strdup(*args);
 	new_command->args = args;
 	new_command->envp = envp;
 	return (new_command);

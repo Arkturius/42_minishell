@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:04:23 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/08 18:08:20 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:26:17 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ void	ft_exec_mux(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 		{
 			if (!ft_strncmp(tree->token->str, "&&", 3))
 				ft_and_divider(tree, node_fd, ex, mode);
-			else
+			else if (!ft_strncmp(tree->token->str, "||", 3))
 				ft_or_divider(tree, node_fd, ex, mode);
+			else
+				ft_sc_divider(tree, node_fd, ex, mode);
 		}
 		else
 			ft_exec_pipe(tree, node_fd, ex, mode);

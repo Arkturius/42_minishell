@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/08 17:05:56 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/09 19:05:08 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -134,7 +134,7 @@ $(NAME): $(LFT) $(OBJS) $(HEADERS)
 	@printf "$(LINE_CLR)  ⭐$(BWHITE) $(NAME):\t PROJECT READY !$(RESET)\n\n"
 
 $(LFT):
-	@make -C $(LFT_DIR)
+	@make -C $(LFT_DIR) -j
 
 $(OBJS_DIR)/%.o: %.c
 	@$(DIR_DUP)

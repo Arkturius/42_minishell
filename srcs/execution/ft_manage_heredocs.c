@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:32:59 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/04 22:01:26 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 16:57:10 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_parse_line(char **line, int hd_fd, int exp)
 	static int	firstline = 0;
 
 	if (exp)
-		ft_replace_vars(ft_update_env(NULL), line, QU_IGNORE);
+		ft_replace_vars(ft_update_env(NULL), line, QU_IGNORE, 1);
 	test = write(hd_fd, *line, ft_strlen(*line));
 	if (firstline++)
 		write(hd_fd, "\n", 1);

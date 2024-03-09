@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:48:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/08 23:24:11 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:20:37 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,47 @@ int	ft_wait_and_or(t_executer *ex)
 		err_code = g_exit_code;
 	free(towait);
 	return (err_code);
+}
+
+void	ft_sc_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
+{
+	pid_t	child;
+	int		err_code;
+
+	err_code = 0;
+	if (mode == EX_LPIPE)
+	{
+		ft_pipes_push(&(ex->pipes), ft_init_pipes());
+		node_fd.out = ex->pipes->fd[1];
+	}
+	if (mode & 1)
+	{
+		child = fork();
+		if (child == -1)
+			return ;
+		if (child == 0)
+		{
+			err_code = ft_exec_semicolon(tree, node_fd, ex);
+			ft_fork_exit(ex);
+			exit(err_code);
+		}
+		ft_pid_push(&(ex->pids), ft_init_pid(child));
+	}
+	else
+		ft_exec_semicolon(tree, node_fd, ex);
+}
+
+int	ft_exec_semicolon(t_node *tree, t_fd node_fd, t_executer *ex)
+{
+	if (node_fd.in != STDIN_FILENO)
+		dup2(node_fd.in, STDIN_FILENO);
+	if (node_fd.out != STDOUT_FILENO)
+		dup2(node_fd.out, STDOUT_FILENO);
+	ft_exec_mux(tree->left, node_fd, ex, EX_LWAIT);
+	g_exit_code = ft_wait_and_or(ex);
+	ft_exec_mux(tree->right, node_fd, ex, EX_RWAIT);
+	g_exit_code = ft_wait_and_or(ex);
+	return (g_exit_code);
 }
 
 int	ft_exec_and(t_node *tree, t_fd node_fd, t_executer *ex)

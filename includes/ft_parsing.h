@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:23:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/08 16:10:33 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 20:52:33 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ char		*ft_open_dquote(int tmp_fd, t_qstate qs);
  * @param str		String to format.
  * @param qs		Carried quote state.
 */
-char		**ft_replace_vars(t_envvar *vars, char **str, t_qstate qs);
+char	\
+	**ft_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q);
 
 /**
  * @brief			Insert environment variable into a string array.
@@ -103,7 +104,8 @@ char		**ft_replace_vars(t_envvar *vars, char **str, t_qstate qs);
  * @param n			Array to add to.
  * @param qs		Quote state.
 */
-void		ft_insert_var(t_envvar *vars, char *start, char ***n, t_qstate qs);
+void	\
+	ft_manage_vars(t_envvar *vars, char *start, char ***new, t_qstate qs);
 
 /**
  * @brief			Dequote a string.
@@ -253,7 +255,7 @@ int			ft_dqstrlen(char *str);
  * @param len		Len to skip.
  * @param qs		Quote state.
 */
-void		ft_quoted_skip(char **str, int *len, t_qstate *qs);
+void		ft_quoted_skip(char **str, int len, t_qstate *qs);
 
 /**
  * @brief			Splits a string, respecting quoting rules.

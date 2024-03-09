@@ -6,15 +6,15 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:05:54 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 19:00:03 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/09 20:56:33 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_DATA_STRUCTURES_H
 # define FT_DATA_STRUCTURES_H
 
-# define LEFT 0
-# define RIGHT 1
+# define L 0
+# define R 1
 
 /* TYPEDEFS ***************************************************************** */
 
