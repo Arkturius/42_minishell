@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/09 19:05:08 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/10 21:18:24 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,51 +46,51 @@ SRCS_DIR	:=	srcs
 OBJS_DIR	:=	.objs
 
 
-SRC_DATA	:=	data_structures/constructors.c		\
-				data_structures/s_envvar.c			\
-				data_structures/s_envvar_utils.c	\
-				data_structures/s_token.c			\
-				data_structures/s_node.c			\
-				data_structures/s_command.c			\
-				data_structures/s_pid.c				\
-				data_structures/s_pipes.c			\
-				data_structures/s_redir.c			\
-				data_structures/s_executer.c
+SRC_DATA	:=	data_structures/ms_constructors.c	\
+				data_structures/ms_envvar.c			\
+				data_structures/ms_envvar_utils.c	\
+				data_structures/ms_token.c			\
+				data_structures/ms_node.c			\
+				data_structures/ms_command.c		\
+				data_structures/ms_pid.c			\
+				data_structures/ms_pipes.c			\
+				data_structures/ms_redir.c			\
+				data_structures/ms_executer.c
 
-SRC_BUILTIN :=	builtins/ft_cd.c					\
-				builtins/ft_echo.c					\
-				builtins/ft_exit.c					\
-				builtins/ft_pwd.c					\
-				builtins/ft_env.c					\
-				builtins/ft_export.c				\
-				builtins/ft_unset.c					\
-				builtins/ft_builtins_utils.c
+SRC_BUILTIN :=	builtins/ms_cd.c					\
+				builtins/ms_echo.c					\
+				builtins/ms_exit.c					\
+				builtins/ms_pwd.c					\
+				builtins/ms_env.c					\
+				builtins/ms_export.c				\
+				builtins/ms_unset.c					\
+				builtins/ms_builtins_utils.c
 
-SRC_PARSING	:=  parsing/ft_tree_build.c				\
-				parsing/ft_parse_dollars.c			\
-				parsing/ft_parse_quotes.c			\
-				parsing/ft_parse_wildcards.c		\
-				parsing/ft_token_auth.c				\
-				parsing/ft_tokenizer.c				\
-				parsing/ft_parsing_utils.c
+SRC_PARSING	:=  parsing/ms_tree_build.c				\
+				parsing/ms_parse_dollars.c			\
+				parsing/ms_parse_quotes.c			\
+				parsing/ms_parse_wildcards.c		\
+				parsing/ms_token_auth.c				\
+				parsing/ms_tokenizer.c				\
+				parsing/ms_parsing_utils.c
 
-SRC_EXEC	:=	execution/ft_manage_close.c			\
-				execution/ft_manage_files.c			\
-				execution/ft_manage_heredocs.c 		\
-				execution/ft_manage_commands.c		\
-				execution/ft_exec_binops.c			\
-				execution/ft_exec_builtins.c		\
-				execution/ft_exec_command.c			\
-				execution/ft_exec_pipeline.c		\
-				execution/ft_exec_utils.c
+SRC_EXEC	:=	execution/ms_manage_close.c			\
+				execution/ms_manage_files.c			\
+				execution/ms_manage_heredocs.c 		\
+				execution/ms_manage_commands.c		\
+				execution/ms_exec_binops.c			\
+				execution/ms_exec_builtins.c		\
+				execution/ms_exec_command.c			\
+				execution/ms_exec_pipeline.c		\
+				execution/ms_exec_utils.c
 
-SRC_PROMPT	:=  prompt/ft_prompt.c					\
-				prompt/ft_manage_dquote.c			\
-				prompt/ft_holder.c
+SRC_PROMPT	:=  prompt/ms_prompt.c					\
+				prompt/ms_manage_dquote.c			\
+				prompt/ms_holder.c
 
-SRC_SETUP	:=  utils/ft_setup_env.c				\
-				utils/ft_handle_signals.c			\
-				utils/ft_error_handling.c
+SRC_SETUP	:=  utils/ms_setup_env.c				\
+				utils/ms_handle_signals.c			\
+				utils/ms_error_handling.c
 
 ALL_SRCS	:=	$(SRC_DATA) 						\
 				$(SRC_BUILTIN)						\
@@ -105,12 +105,12 @@ SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
 OBJS		:=	$(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 
 HEADERS		:=	includes/minishell.h 				\
-				includes/ft_enumerates.h			\
-				includes/ft_data_structures.h 		\
-				includes/ft_parsing.h				\
-				includes/ft_builtins.h 				\
-				includes/ft_file_manager.h			\
-				includes/ft_execution.h
+				includes/ms_enumerates.h			\
+				includes/ms_data_structures.h 		\
+				includes/ms_parsing.h				\
+				includes/ms_builtins.h 				\
+				includes/ms_file_manager.h			\
+				includes/ms_execution.h
 
 CC          := cc
 

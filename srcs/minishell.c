@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:01:13 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/10 20:33:52 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 21:51:46 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit_code = 0;
 
-int	ft_isnt_empty(char *str)
+int	ms_isnt_empty(char *str)
 {
 	char	*tmp;
 
@@ -26,14 +26,14 @@ int	ft_isnt_empty(char *str)
 	return (*tmp);
 }
 
-void	ft_print_logo(t_envvar *envp)
+void	ms_print_logo(t_envvar *envp)
 {
 	int		fd;
 	char	*line;
 
-	if (!ft_get_var(envp, "LOGOP"))
+	if (!ms_get_var(envp, "LOGOP"))
 		return ;
-	fd = open(ft_get_var(envp, "LOGOP")->values[0], 0);
+	fd = open(ms_get_var(envp, "LOGOP")->values[0], 0);
 	if (fd < 0)
 		return ;
 	line = get_next_line(fd);
@@ -49,7 +49,7 @@ void	ft_print_logo(t_envvar *envp)
 	close(fd);
 }
 
-char	*ft_get_temp_file(char *head, int size)
+char	*ms_get_temp_file(char *head, int size)
 {
 	int		urandom;
 	char	*rand;
@@ -71,7 +71,7 @@ char	*ft_get_temp_file(char *head, int size)
 	return (ft_strjoin(head, tmp, "-", 0b10));
 }
 
-int	ft_launch_single_command(char *line, t_envvar **envp)
+int	ms_launch_single_command(char *line, t_envvar **envp)
 {
 	int			first;
 	t_token		*tokens;
@@ -82,13 +82,13 @@ int	ft_launch_single_command(char *line, t_envvar **envp)
 	first = 0;
 	if (!*line)
 		return (g_exit_code);
-	if (ft_to_tokens(&tokens, line, envp) || !tokens)
+	if (ms_to_tokens(&tokens, line, envp) || !tokens)
 		return (g_exit_code);
-	if (ft_to_tree_exec(&tokens, &tree, envp))
+	if (ms_to_tree_exec(&tokens, &tree, envp))
 		return (g_exit_code);
-	ft_close_tree_rec(tree);
-	ft_clear_tree(tree);
-	ft_clear_env(*envp);
+	ms_close_tree_rec(tree);
+	ms_clear_tree(tree);
+	ms_clear_env(*envp);
 	return (g_exit_code);
 }
 
@@ -97,26 +97,26 @@ int	main(int argc, char **argv, char **envp)
 	t_envvar	*env;
 
 	rl_catch_signals = 0;
-	env = ft_setup_env(argv, envp);
+	env = ms_setup_env(argv, envp);
 	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
 	{
-		ft_signal_state(SIGHANDLER_INT);
-		g_exit_code = ft_launch_single_command(ft_strdup(argv[2]), &env);
+		ms_signal_state(SIGHANDLER_INT);
+		g_exit_code = ms_launch_single_command(ft_strdup(argv[2]), &env);
 		exit(g_exit_code);
 	}
 	if (argc >= 2)
 	{
-		ft_error_message(ERR_INVOPT, argv[1]);
-		ft_clear_env(env);
+		ms_error_message(ERR_INVOPT, argv[1]);
+		ms_clear_env(env);
 		exit(EXIT_FAILURE);
 	}
-	ft_print_logo(env);
-	ft_signal_state(SIGHANDLER_INT);
+	// ms_print_logo(env);
+	ms_signal_state(SIGHANDLER_INT);
 	while (42)
 	{
-		ft_update_env(&env);
-		ft_tree_holder(1, NULL);
-		ft_prompt_handler(&env);
+		ms_update_env(&env);
+		ms_tree_holder(1, NULL);
+		ms_prompt_handler(&env);
 	}
 	return (EXIT_SUCCESS);
 }
