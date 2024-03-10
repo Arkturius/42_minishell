@@ -6,11 +6,18 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 19:49:54 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/03 19:53:48 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 17:49:27 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+long	ft_abs(long n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
 
 int	ft_is_numeric(char *str)
 {
@@ -29,8 +36,8 @@ int	ft_is_numeric(char *str)
 	while (ft_isdigit(*(str)))
 		str++;
 	if (sign)
-		return (!*str && str - tmp < 19);
-	return (!*str && (str - tmp) && (str - tmp < 18));
+		return (!*str && str - tmp < 21);
+	return (!*str && (str - tmp) && (str - tmp < 20));
 }
 
 char	*ft_backtrim(char *str, char c)

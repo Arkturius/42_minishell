@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:07:11 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/09 18:25:38 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:05:51 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,28 @@
 t_envvar	*ft_init_var(char *value)
 {
 	t_envvar	*new_var;
-	char		*equal;
+	char		*eq;
 	char		**tmp;
 
 	new_var = malloc(sizeof(t_envvar));
 	if (!new_var)
 		return (NULL);
-	equal = ft_strchr(value, '=');
-	if (equal)
+	eq = ft_strchr(value, '=');
+	if (eq)
 	{
 		tmp = ft_split(value, '=');
 		new_var->name = ft_strdup(tmp[0]);
 		ft_free_tab((void **)tmp);
-		new_var->values = ft_split(equal + 1, ':');
+		if (*(eq + 1) != ':' && \
+			*(eq + ft_strlen(eq + 1) + !!ft_strlen(eq + 1) + 1) != ':')
+			new_var->values = ft_split(eq + 1, ':');
+		else
+			new_var->values = ft_strtab(ft_strdup(eq + 1));
 	}
-	else
-	{
+	if (!eq)
 		new_var->name = ft_strdup(value);
+	if (!eq)
 		new_var->values = NULL;
-	}
 	new_var->next = NULL;
 	return (new_var);
 }
@@ -45,8 +48,9 @@ t_command	*ft_init_command(t_redir *redirs, char **args, t_envvar **envp)
 	new_command = malloc(sizeof(t_command));
 	if (!new_command)
 		return (NULL);
-	new_command->infile = 0;
-	new_command->outfile = 1;
+	new_command->infile = STDIN_FILENO;
+	new_command->outfile = STDOUT_FILENO;
+	new_command->error = STDERR_FILENO;
 	new_command->heredoc = -42;
 	new_command->redirs = redirs;
 	new_command->path = NULL;

@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:58:08 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 18:07:01 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 19:58:11 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ t_redir	*ft_init_redir(t_token *tmp)
 		new_redir->type = RD_HEREDOC;
 	else if (!ft_strncmp(tmp->str, ">", 2))
 		new_redir->type = RD_OUTPUTS;
+	else if (!ft_strncmp(tmp->str, "2>", 3))
+		new_redir->type = RD_ERRSOUT;
 	else if (!ft_strncmp(tmp->str, "<", 2))
 		new_redir->type = RD_INFILES;
 	new_redir->file = ft_strdup(tmp->next->str);

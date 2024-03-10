@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:36:47 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 16:37:22 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 19:51:36 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef enum e_redir_type
 	RD_INFILES,
 	RD_HEREDOC,
 	RD_OUTPUTS,
-	RD_APPENDS
+	RD_APPENDS,
+	RD_ERRSOUT
 }	t_redir_type;
 
 /**
@@ -113,7 +114,8 @@ typedef enum e_error_code
 	ERR_ISADIR,
 	ERR_INVOPT,
 	ERR_INVFDS,
-	ERR_AMBRED
+	ERR_AMBRED,
+	ERR_NOARGS
 }	t_error;
 
 /* ************************************************************************** */

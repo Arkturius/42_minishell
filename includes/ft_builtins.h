@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 07:14:12 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/09 20:45:09 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 17:56:52 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,12 @@ t_error		ft_manage_cd(int argc, char **argv, t_envvar **vars, int out);
  * @brief			atoi for exit codes.
  * 
  * @param str		char* to convert.
+ * @param cmd		t_command pointer.
  * 
  * @return			Numeric value of str n. Subtracted from 256 if negative.
  * 					Modulo 256
 */
-long		ft_exit_atoi(char *str);
+long		ft_exit_atoi(char *str, t_command *cmd);
 
 /**
  * @brief			Check if a string is a numeric value.

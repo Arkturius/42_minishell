@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:19:03 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/09 21:06:39 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 18:25:23 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_var_len(char *str)
 	if (!*tmp)
 		return (1);
 	if (ft_isdigit(*tmp) || ft_strchr("\"'", *tmp))
-		return (1);
+		return (2);
 	if (!ft_strchr("_?", *tmp) && !ft_isalnum(*tmp))
 		return (1);
 	if (*tmp == '?')
@@ -67,7 +67,11 @@ void	ft_manage_vars(t_envvar *vars, char *start, char ***new, t_qstate qs)
 	}
 	start++;
 	if (ft_isdigit(*start))
+	{
+		if (*start == '0')
+			ft_strapp(new, ft_strdup("minishell"));
 		return ;
+	}
 	len = ft_var_len(start - 1);
 	if (ft_strchr("\"'", *start))
 		return ;
@@ -83,6 +87,8 @@ char	**ft_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q)
 
 	tmp = *str;
 	new = NULL;
+	if (!tmp)
+		return (NULL);
 	while (*tmp)
 	{
 		if (ft_strcspn(tmp, "$") > 0)

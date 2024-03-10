@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:55:34 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/09 20:11:26 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:01:07 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	ft_is_token(char *str, t_qstate qs)
 {
 	char		**tmp;
-	static char	*tokens[12] = {" ", ";", "(", ")", "||", "&&", \
-								"|", ">>", ">", "<<", "<", NULL};
+	static char	*tokens[13] = {" ", ";", "(", ")", "||", "&&", \
+								"|", "2>", ">>", ">", "<<", "<", NULL};
 
 	tmp = tokens;
 	if (!str || !*str)
@@ -39,7 +39,8 @@ t_token_type	ft_ttyper(char *str, t_qstate qs)
 		return (TK_BINOPS);
 	if (!ft_strncmp(str, "|", 1))
 		return (TK_PIPEXS);
-	if (!ft_strncmp(str, ">", 1) || !ft_strncmp(str, "<", 1))
+	if (!ft_strncmp(str, ">", 1) || !ft_strncmp(str, "<", 1) \
+		|| !ft_strncmp(str, "2>", 2))
 		return (TK_REDIRS);
 	return (TK_STRING);
 }
@@ -87,21 +88,22 @@ int	ft_verify_wildcard(char *str, t_qstate qs)
 	return (0);
 }
 
-void	ft_format_tokens(t_token **tokens, t_envvar *home)
+void	ft_tilde_expansion(t_token **tokens, t_envvar *home)
 {
 	t_token		*tmp;
+	char		*t;
+	char		*new;
 
 	tmp = *tokens;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->str, "~", 2))
+		t = ft_strchr(tmp->str, '~');
+		if (t && t == tmp->str && ((*(t + 1) == '/') ^ !*(t + 1)) && home)
 		{
-			if (home)
-			{
-				free(tmp->str);
-				tmp->str = ft_get_varstring(home, 0, 0);
-			}
-			tmp = tmp->next;
+			new = ft_strndup(tmp->str, t - tmp->str);
+			new = ft_strjoin(new, t + 1, ft_get_varstring(home, 0, 0), 0b101);
+			free(tmp->str);
+			tmp->str = new;
 		}
 		else
 			tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 22:00:02 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/04 23:21:44 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 19:21:07 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ void	ft_error_message(t_error err, char *str)
 	if (err == ERR_ISADIR)
 		ft_dprintf(2, ES_ISADIR, P_ERROR, str);
 	if (err == ERR_INVOPT)
-		ft_dprintf(2, ES_INVOPT, P_ERROR, str);
+		ft_dprintf(2, ES_INVOPT, P_ERROR, *str, *(str + 1));
 	if (err == ERR_HDSTOP)
 		ft_dprintf(2, ES_HDSTOP, P_WARNING, str);
 	if (err == ERR_DQSTOP)
 		ft_dprintf(2, ES_DQSTOP, P_WARNING, str);
+	if (err == ERR_NOARGS)
+		ft_dprintf(2, ES_NOARGS, str);
 	ft_errors_end(err, str);
 }

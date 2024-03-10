@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:02:28 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/09 18:40:38 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:10:29 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ t_error	ft_open_heredocs(t_command *cmd)
 	return (cmd->heredoc == OP_FILEKO);
 }
 
-t_error	ft_file_checker(t_command *cmd, char **file, int mode)
+t_error	ft_file_checker(char **file, int mode)
 {
 	char	**files;
 	char	*var;
 
 	var = ft_strdup(*file);
 	if (ft_strchr(*file, '$'))
-		ft_replace_vars(*cmd->envp, file, QU_ZERO, 0);
+		ft_replace_vars(ft_update_env(NULL), file, QU_ZERO, 0);
 	files = ft_quoted_split(*file, " ");
 	if (ft_tab_len(files) > 1)
 	{
@@ -60,16 +60,10 @@ t_error	ft_file_checker(t_command *cmd, char **file, int mode)
 	return (ERR_NOERRS);
 }
 
-t_error	ft_open_file(t_command *cmd, char **file, int mode)
+t_error	ft_open_file(int *fd, char **file, int mode)
 {
-	int	*fd;
-
-	if (ft_file_checker(cmd, file, mode))
+	if (ft_file_checker(file, mode))
 		return (ERR_AMBRED);
-	if (mode == OPEN_READ)
-		fd = &(cmd->infile);
-	if ((mode == OPEN_CREATE || mode == OPEN_APPEND))
-		fd = &(cmd->outfile);
 	if (*fd > 2)
 		close(*fd);
 	if (mode != OPEN_READ && *fd != OP_FILEKO)
@@ -99,9 +93,11 @@ t_error	ft_open_outputs(t_command *cmd)
 		if (tmp->type == RD_INFILES && access(tmp->file, F_OK))
 			break ;
 		if (tmp->type == RD_OUTPUTS)
-			op = ft_open_file(cmd, &(tmp->file), OPEN_CREATE);
+			op = ft_open_file(&(cmd->outfile), &(tmp->file), OPEN_CREATE);
 		else if (tmp->type == RD_APPENDS)
-			op = ft_open_file(cmd, &(tmp->file), OPEN_APPEND);
+			op = ft_open_file(&(cmd->outfile), &(tmp->file), OPEN_APPEND);
+		else if (tmp->type == RD_ERRSOUT)
+			op = ft_open_file(&(cmd->error), &(tmp->file), OPEN_CREATE);
 		if (cmd->outfile != OP_FILEKO)
 			tmp = tmp->next;
 	}
@@ -125,7 +121,7 @@ t_error	ft_open_inputs(t_command *cmd, int *hd_last)
 		if (tmp->type == RD_INFILES)
 		{
 			*hd_last = 0;
-			op = ft_open_file(cmd, &(tmp->file), OPEN_READ);
+			op = ft_open_file(&(cmd->infile), &(tmp->file), OPEN_READ);
 		}
 		if (tmp->type != RD_OUTPUTS && tmp->type != RD_APPENDS)
 			*hd_last |= (tmp->type == RD_HEREDOC);

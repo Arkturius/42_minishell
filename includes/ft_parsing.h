@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:23:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/09 20:52:33 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 18:08:23 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ char		*ft_format_wildcard(char ***str);
  * @param tokens	Token linked list adress.
  * @param home		HOME t_envvar pointer.
 */
-void		ft_format_tokens(t_token **tokens, t_envvar *home);
+void		ft_tilde_expansion(t_token **tokens, t_envvar *home);
 
 /**
  * @brief			Replace a wildcard token by a list of string tokens.

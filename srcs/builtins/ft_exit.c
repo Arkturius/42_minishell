@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 07:38:34 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 15:14:19 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 17:55:54 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit_code;
 
-long	ft_exit_atoi(char *str)
+long	ft_exit_atoi(char *str, t_command *cmd)
 {
 	long	n;
 	int		sign;
@@ -25,8 +25,10 @@ long	ft_exit_atoi(char *str)
 		str++;
 	if (*str == '-' || *str == '+')
 		sign = (*(str++) == '-');
-	while (ft_isdigit(*str))
+	while (ft_isdigit(*str) && (n * 10 + (int){*(str) - '0'} >= n))
 		n = n * 10 + (int){*(str++) - '0'};
+	if (ft_isdigit(*str))
+		ft_exit_manager(ERR_ERRORS, ERR_NOTNUM, cmd);
 	if (sign)
 		return ((256 - n) % 256);
 	return (n % 256);
@@ -71,6 +73,6 @@ int	ft_exit(t_command *cmd)
 	if (argc > 1)
 		ft_exit_manager(ERR_FAILED, ERR_TMARGS, cmd);
 	else
-		ft_exit_manager(ft_exit_atoi(cmd->args[1]), ERR_NOERRS, cmd);
+		ft_exit_manager(ft_exit_atoi(cmd->args[1], cmd), ERR_NOERRS, cmd);
 	return (argc > 1);
 }

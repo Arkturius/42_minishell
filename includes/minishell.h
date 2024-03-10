@@ -91,7 +91,7 @@
 
 # define ES_ISADIR "%s%s: Is a directory\n"
 
-# define ES_INVOPT "%s%s: Invalid option\n"
+# define ES_INVOPT "%s%c%c: Invalid option\n"
 
 # define ES_HDSTOP "%s here-document delimited by end-of-file, (wanted `%s')\n"
 
@@ -108,6 +108,8 @@
 # define ES_INVFDS "%s%s: no more fds. Aborting\n"
 
 # define ES_AMBRED "%s%s: ambiguous redirect\n"
+
+# define ES_NOARGS "%s%s: argument required\n"
 
 /* OPENING MODES ************************************************************ */
 

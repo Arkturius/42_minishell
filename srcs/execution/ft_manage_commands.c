@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:42:43 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/09 20:58:34 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 19:22:37 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ t_error	ft_command_updater(t_command *cmd)
 		cmd->path = NULL;
 		cmd->path = ft_get_path(*cmd->args, *(cmd->envp));
 	}
-	if (!cmd->path && !cmd->redirs)
+	if ((!cmd->path && !cmd->redirs) || \
+		(**cmd->args == '.' && ft_strlen(*cmd->args) == 1))
 		return (ERR_NOTCMD);
 	return (ERR_NOERRS);
 }

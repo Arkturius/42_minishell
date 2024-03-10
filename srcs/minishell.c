@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:01:13 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/09 21:06:57 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:30:49 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	ft_print_logo(t_envvar *envp)
 	int		fd;
 	char	*line;
 
-	if (!ft_get_var(envp, "LOGOPWD"))
+	if (!ft_get_var(envp, "LOGOP"))
 		return ;
-	fd = open(ft_get_var(envp, "LOGOPWD")->values[0], 0);
+	fd = open(ft_get_var(envp, "LOGOP")->values[0], 0);
 	if (fd < 0)
 		return ;
 	line = get_next_line(fd);
@@ -103,6 +103,12 @@ int	main(int argc, char **argv, char **envp)
 		ft_signal_state(SIGHANDLER_INT);
 		g_exit_code = ft_launch_single_command(ft_strdup(argv[2]), &env);
 		exit(g_exit_code);
+	}
+	if (argc >= 2)
+	{
+		ft_error_message(ERR_INVOPT, argv[1]);
+		ft_clear_env(env);
+		exit(EXIT_FAILURE);
 	}
 	ft_print_logo(env);
 	ft_signal_state(SIGHANDLER_INT);

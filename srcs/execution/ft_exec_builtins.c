@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:50:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/09 21:05:30 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:26:15 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 	int		err_code;
 	t_fd	stds;
 
-	stds = (t_fd){dup(STDIN_FILENO), dup(STDOUT_FILENO)};
-	ft_process_redirs(cmd, node_fd);
+	stds = (t_fd){0, 1};
 	if (f == &ft_exit && (ft_tab_len(cmd->args) <= 2 \
 						|| !ft_is_numeric(cmd->args[1])))
 	{
@@ -59,6 +58,11 @@ int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 		ft_close_executer(ex);
 		free(ex);
 		ft_dprintf(2, "exit\n");
+	}
+	else
+	{
+		stds = (t_fd){dup(STDIN_FILENO), dup(STDOUT_FILENO)};
+		ft_process_redirs(cmd, node_fd);
 	}
 	err_code = f(cmd);
 	ft_process_redirs(NULL, stds);
@@ -78,11 +82,11 @@ t_error	ft_builtin_checker(t_command *cmd, t_executer *ex)
 		return (ERR_NOERRS);
 	while (*tmp && **tmp != '-')
 		tmp++;
-	if (*tmp && !ft_strncmp(*cmd->args, "exit", 5) && ft_is_numeric(*tmp))
+	if (*tmp && !ft_strncmp(*cmd->args, "exit", 5))
 		return (ERR_NOERRS);
 	if (*tmp)
 	{
-		ft_error_message(ERR_INVOPT, *tmp);
+		ft_dprintf(cmd->error, ES_INVOPT, P_ERROR, **tmp, *(*tmp + 1));
 		if (!ft_strncmp(*cmd->args, "env", 4))
 			ft_fake_pid_child(125, ex);
 		else

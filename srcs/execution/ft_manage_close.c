@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 17:43:40 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/06 18:46:43 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:18:06 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	ft_close_command(t_command *command)
 		close(command->infile);
 	if (command->outfile > 2)
 		close(command->outfile);
+	if (command->error > 2)
+		close(command->error);
 	if (command->heredoc > 2)
 		close(command->heredoc);
 }

@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:48:51 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/08 14:20:39 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:19:41 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,25 @@ void	ft_fake_pid_child(int err_code, t_executer *ex)
 void	ft_process_redirs(t_command *cmd, t_fd node_fd)
 {
 	t_fd	fds;
+	int		err;
 
 	fds = (t_fd){node_fd.in, node_fd.out};
+	err = STDERR_FILENO;
 	if (cmd)
 	{
 		if (cmd->infile != STDIN_FILENO)
 			fds.in = cmd->infile;
 		if (cmd->outfile != STDOUT_FILENO)
 			fds.out = cmd->outfile;
+		if (cmd->error != STDERR_FILENO)
+			err = cmd->error;
 	}
 	if (fds.in != STDIN_FILENO)
 		dup2(fds.in, STDIN_FILENO);
 	if (fds.out != STDOUT_FILENO)
 		dup2(fds.out, STDOUT_FILENO);
+	if (err != STDERR_FILENO)
+		dup2(err, STDERR_FILENO);
 	ft_close_command(cmd);
 }
 

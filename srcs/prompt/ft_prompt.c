@@ -62,7 +62,7 @@ t_error	ft_to_tokens(t_token **tokens, char *line, t_envvar **envp)
 		g_exit_code = 2;
 		return (ERR_FAILED);
 	}
-	ft_format_tokens(tokens, ft_get_var(*envp, "HOME"));
+	ft_tilde_expansion(tokens, ft_get_var(*envp, "HOME"));
 	ft_remove_braces(tokens);
 	if (!*tokens)
 		return (ERR_FAILED);
