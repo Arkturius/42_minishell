@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 17:43:40 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 20:18:06 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:59:33 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	ft_close_executer(t_executer *ex)
 		tmp_pid = ft_pid_pop(&(ex->pids));
 		free(tmp_pid);
 	}
+	free(ex);
 }
 
 void	ft_close_pipes(t_pipes *tmp_pipe)

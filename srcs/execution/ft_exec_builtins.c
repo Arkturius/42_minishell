@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:50:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 20:26:15 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:59:46 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,12 @@ int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 		if (f == &ft_exit)
 		{
 			ft_close_executer(ex);
-			free(ex);
 			ex = NULL;
 		}
 		ft_process_redirs(cmd, node_fd);
 		ret = f(cmd);
 		ft_close_executer(ex);
 		ft_close_tree_rec(ft_tree_holder(0, NULL));
-		free(ex);
 		ex = NULL;
 		if (f != &ft_exit)
 			ft_fork_exit(ex);
@@ -49,24 +47,28 @@ int (*f)(t_command *), t_command *cmd, t_executer *ex, t_fd node_fd)
 {
 	int		err_code;
 	t_fd	stds;
+	int		errfd;
 
-	stds = (t_fd){0, 1};
+	stds = (t_fd){STDIN_FILENO, STDOUT_FILENO};
+	errfd = STDERR_FILENO;
 	if (f == &ft_exit && (ft_tab_len(cmd->args) <= 2 \
 						|| !ft_is_numeric(cmd->args[1])))
 	{
 		ft_close_tree_rec(ft_tree_holder(0, NULL));
 		ft_close_executer(ex);
-		free(ex);
-		ft_dprintf(2, "exit\n");
+		ft_dprintf(STDERR_FILENO, "exit\n");
 	}
 	else
 	{
 		stds = (t_fd){dup(STDIN_FILENO), dup(STDOUT_FILENO)};
+		errfd = dup(STDERR_FILENO);
 		ft_process_redirs(cmd, node_fd);
 	}
 	err_code = f(cmd);
+	if (errfd > 2)
+		dup2(errfd, STDERR_FILENO);
 	ft_process_redirs(NULL, stds);
-	ft_close_v(2, stds.in, stds.out);
+	ft_close_v(3, stds.in, stds.out, errfd);
 	ft_fake_pid_child(err_code, ex);
 }
 

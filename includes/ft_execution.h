@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:03:08 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/09 21:27:14 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:48:09 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,54 +43,16 @@ void	ft_exec_pipe(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
  * @param ex		Current t_executer.
  * @param mode		Execution mode.
 */
-void	ft_sc_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
+void	ft_ops_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
 
 /**
- * @brief			Execute a Semicolon node.
+ * @brief			Execute a binary operator node ("&&", "||", ";").
  * 
  * @param tree		Node to execute.
  * @param node_fd	Fds for this node.
  * @param ex		Current t_executer.
 */
-int		ft_exec_semicolon(t_node *tree, t_fd node_fd, t_executer *ex);
-
-/**
- * @brief			Divide AND execution, either forked or not.
- * 
- * @param tree		Node to execute.
- * @param node_fd	Fds for this node.
- * @param ex		Current t_executer.
- * @param mode		Execution mode.
-*/
-void	ft_and_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
-
-/**
- * @brief			Execute a AND node.
- * 
- * @param tree		Node to execute.
- * @param node_fd	Fds for this node.
- * @param ex		Current t_executer.
-*/
-int		ft_exec_and(t_node *tree, t_fd node_fd, t_executer *ex);
-
-/**
- * @brief			Divide OR execution, either forked or not.
- * 
- * @param tree		Node to execute.
- * @param node_fd	Fds for this node.
- * @param ex		Current t_executer.
- * @param mode		Execution mode.
-*/
-void	ft_or_divider(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode);
-
-/**
- * @brief			Execute a OR node.
- * 
- * @param tree		Node to execute.
- * @param node_fd	Fds for this node.
- * @param ex		Current t_executer.
-*/
-int		ft_exec_or(t_node *tree, t_fd node_fd, t_executer *ex);
+int		ft_exec_ops(t_node *tree, t_fd node_fd, t_executer *ex);
 
 /**
  * @brief			Command handler for execution.

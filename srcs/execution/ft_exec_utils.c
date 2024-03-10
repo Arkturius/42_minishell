@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:48:51 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 20:19:41 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:59:30 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ void	ft_command_exit(int err_code)
 {
 	if (!WIFEXITED(err_code) && WCOREDUMP(err_code))
 	{
-		ft_dprintf(2, "Quit (core dumped)\n");
+		ft_dprintf(STDERR_FILENO, "Quit (core dumped)\n");
 		g_exit_code = 131;
 	}
 	if (WTERMSIG(err_code) == 2)
 	{
-		ft_dprintf(2, "\n");
+		ft_dprintf(STDERR_FILENO, "\n");
 		g_exit_code = 130;
 	}
 }
@@ -95,7 +95,6 @@ t_error	ft_check_access(char *filename, int mode)
 void	ft_fork_exit(t_executer *ex)
 {
 	ft_close_executer(ex);
-	free(ex);
 	rl_clear_history();
 	ft_clear_env(ft_update_env(NULL));
 	ft_clear_tree(ft_tree_holder(0, NULL));
