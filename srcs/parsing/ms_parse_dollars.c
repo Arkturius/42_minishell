@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:19:03 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/10 21:55:15 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:47:50 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,12 @@ int	ms_var_len(char *str)
 	tmp = str + 1;
 	if (!*tmp)
 		return (1);
-	if (ft_isdigit(*tmp))
+	if (ft_isdigit(*tmp) || *tmp == '?')
 		return (2);
-	if (ft_strchr("\"'", *tmp))
+	if (!ft_isalnum(*tmp) || *tmp == '"')
 		return (1);
-	if (!ft_strchr("_?", *tmp) && !ft_isalnum(*tmp))
-		return (1);
-	if (*tmp == '?')
-		return (2);
 	tmp++;
-	while (*tmp && (ft_isalnum(*tmp) && !ft_strchr("_?", *tmp)))
+	while (*tmp && ft_isalnum(*tmp) && *tmp != '?')
 		tmp++;
 	return (tmp - str);
 }

@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:01:13 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/10 21:51:46 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:57:16 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,46 +71,19 @@ char	*ms_get_temp_file(char *head, int size)
 	return (ft_strjoin(head, tmp, "-", 0b10));
 }
 
-int	ms_launch_single_command(char *line, t_envvar **envp)
-{
-	int			first;
-	t_token		*tokens;
-	t_node		*tree;
-
-	tokens = NULL;
-	tree = NULL;
-	first = 0;
-	if (!*line)
-		return (g_exit_code);
-	if (ms_to_tokens(&tokens, line, envp) || !tokens)
-		return (g_exit_code);
-	if (ms_to_tree_exec(&tokens, &tree, envp))
-		return (g_exit_code);
-	ms_close_tree_rec(tree);
-	ms_clear_tree(tree);
-	ms_clear_env(*envp);
-	return (g_exit_code);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_envvar	*env;
 
 	rl_catch_signals = 0;
 	env = ms_setup_env(argv, envp);
-	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
-	{
-		ms_signal_state(SIGHANDLER_INT);
-		g_exit_code = ms_launch_single_command(ft_strdup(argv[2]), &env);
-		exit(g_exit_code);
-	}
 	if (argc >= 2)
 	{
 		ms_error_message(ERR_INVOPT, argv[1]);
 		ms_clear_env(env);
 		exit(EXIT_FAILURE);
 	}
-	// ms_print_logo(env);
+	ms_print_logo(env);
 	ms_signal_state(SIGHANDLER_INT);
 	while (42)
 	{

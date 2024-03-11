@@ -49,7 +49,7 @@ t_error	ms_to_tokens(t_token **tokens, char *line, t_envvar **envp)
 	char	*err_token;
 
 	syntax = (!!ms_quote_error(line, NULL, QU_ZERO) << 1);
-	*tokens = ms_tokenizer(line, QU_ZERO);
+	*tokens = ms_tokenizer(line, QU_ZERO, &ms_is_token);
 	syntax |= ms_verify_token(*tokens, &err_token);
 	if (syntax & 0b011)
 	{

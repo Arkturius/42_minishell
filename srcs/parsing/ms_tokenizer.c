@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:55:34 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/10 21:30:40 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:56:04 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_token_type	ms_ttyper(char *str, t_qstate qs)
 	return (TK_STRING);
 }
 
-t_token	*ms_tokenizer(char *str, t_qstate qs)
+t_token	*ms_tokenizer(char *str, t_qstate qs, int (*tk)(char *, t_qstate))
 {
 	t_token	*token;
 	char	*tstring;
@@ -56,11 +56,11 @@ t_token	*ms_tokenizer(char *str, t_qstate qs)
 	if (!str || !*str)
 		return (NULL);
 	tmp = str;
-	len = ms_is_token(tmp, qs);
+	len = tk(tmp, qs);
 	while (*tmp && (!len || (ft_isspace(*tmp) && qs != QU_ZERO)))
 	{
 		ms_qs_update(*(tmp++), &qs);
-		len = ms_is_token(tmp, qs);
+		len = tk(tmp, qs);
 	}
 	if (tmp == str)
 		tstring = ft_strndup(str, len);
@@ -68,7 +68,7 @@ t_token	*ms_tokenizer(char *str, t_qstate qs)
 		tstring = ft_strndup(str, tmp - str);
 	if (ft_strncmp(tstring, " ", 2))
 		token = ms_init_token(ft_strdup(tstring), ms_ttyper(str, qs));
-	ms_add_token(&token, ms_tokenizer(str + ft_strlen(tstring), qs));
+	ms_add_token(&token, ms_tokenizer(str + ft_strlen(tstring), qs, tk));
 	free(tstring);
 	return (token);
 }

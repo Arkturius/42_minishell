@@ -6,12 +6,12 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:23:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:28:58 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:57:40 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PARSING_H
-# define FT_PARSING_H
+#ifndef MS_PARSING_H
+# define MS_PARSING_H
 
 /**
  * @brief			Quote state updater.
@@ -31,7 +31,7 @@ int			ms_qs_update(char c, t_qstate *qs);
  * 
  * @return			t_token linked list.
 */
-t_token		*ms_tokenizer(char *str, t_qstate qs);
+t_token		*ms_tokenizer(char *str, t_qstate qs, int (*tk)(char *, t_qstate));
 
 /* STRING MANIPULATION ****************************************************** */
 
@@ -187,7 +187,6 @@ char		*ms_format_wildcard(char ***str);
 */
 void		ms_tilde_expansion(t_token **tokens, t_envvar *home);
 
-
 /**
  * @brief			Replace a string by its wildcard equivalent if there is one.
  * 
@@ -222,15 +221,6 @@ char		*ms_get_prompt_string(t_envvar *envp);
  * @param envp		Envp linked list.
 */
 void		ms_print_logo(t_envvar *envp);
-
-/**
- * @brief			Sorts a string array by alphabetical order, 
- * 					not case sensitive.
- * 
- * @param tab		String array.
- * @param size		Array size.
-*/
-void		ms_sort_lowstrs_tab(char **tab, int size);
 
 /**
  * @brief			Unquoted string len.

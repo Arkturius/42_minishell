@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 22:00:02 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:34:17 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 10:36:13 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ void	ms_error_message(t_error err, char *str)
 	if (err == ERR_DQSTOP)
 		ft_dprintf(STDERR_FILENO, ES_DQSTOP, P_WARNING, str);
 	if (err == ERR_NOARGS)
-		ft_dprintf(STDERR_FILENO, ES_NOARGS, str);
+		ft_dprintf(STDERR_FILENO, ES_NOARGS, P_ERROR, str);
 	ms_errors_end(err, str);
 }
