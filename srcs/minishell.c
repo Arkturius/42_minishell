@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:01:13 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/11 11:57:16 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 22:46:57 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	t_envvar	*env;
 
 	rl_catch_signals = 0;
+	rl_outstream = stderr;
 	env = ms_setup_env(argv, envp);
 	if (argc >= 2)
 	{
@@ -87,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 	ms_signal_state(SIGHANDLER_INT);
 	while (42)
 	{
-		ms_update_env(&env);
+		ms_update_env(0, &env);
 		ms_tree_holder(1, NULL);
 		ms_prompt_handler(&env);
 	}

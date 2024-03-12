@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:47:41 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:32:16 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:41:30 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_node	*ms_build_tree(t_token *tokens, t_envvar **env)
 	t_node		*tree;
 
 	tree = NULL;
-	ms_update_env(env);
+	ms_update_env(0, env);
 	while (tokens)
 	{
 		if (tokens->type & TK_BRACES)

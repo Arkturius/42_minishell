@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 00:56:54 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/10 21:29:39 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 20:49:25 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ int	ms_sub_valid_token(t_token *t)
 
 	bops = TK_BINOPS | TK_PIPEXS;
 	strs = TK_STRING | TK_REDIRS;
+	if (t->type == TK_NEWLIN)
+		return (1);
 	if ((t->type & TK_BINOPS) && (t->next->type & bops))
 		return (0);
-	else if (t->type == TK_REDIRS && !(t->next->type & TK_STRING))
+	else if (t->type == TK_REDIRS && !(t->next->type == TK_STRING))
 		return (0);
 	else if (t->type == TK_PIPEXS && (t->next->type & bops))
 		return (0);
@@ -41,13 +43,18 @@ int	ms_valid_token(t_token *t, char **err_token)
 {
 	if (t->type & (TK_BINOPS | TK_PIPEXS))
 		return (0);
-	while (t->next)
+	while (t && ms_sub_valid_token(t))
 	{
-		*err_token = t->next->str;
-		if (!ms_sub_valid_token(t))
-			return (0);
+		if (t->next)
+			*err_token = t->next->str;
 		t = t->next;
 	}
+	if (!t)
+		return (1);
+	if (t->type == TK_REDIRS && t->next->type == TK_NEWLIN)
+		*err_token = "newline";
+	if (t->type == TK_REDIRS && t->next->type != TK_NEWLIN)
+		*err_token = t->next->str;
 	return (t->type & (TK_BRACES | TK_STRING));
 }
 
@@ -56,7 +63,7 @@ int	ms_verify_brace(t_token *tokens)
 	int	braces;
 
 	braces = 0;
-	while (tokens != NULL)
+	while (tokens->type != TK_NEWLIN)
 	{
 		if ((tokens->type & TK_BRACES) && !ft_strncmp(tokens->str, "(", 2))
 			braces++;
@@ -69,21 +76,23 @@ int	ms_verify_brace(t_token *tokens)
 	return (braces == 0);
 }
 
-int	ms_verify_token(t_token *tokens, char **err_token)
+int	ms_verify_token(t_token **tokens, char **err_token)
 {
 	t_token	*tmp;
 	int		hdcount;
 
-	*err_token = tokens->str;
-	if (!ms_valid_token(tokens, err_token) || !ms_verify_brace(tokens))
+	ms_add_token(tokens, ms_init_token(ft_strdup("\n"), TK_NEWLIN));
+	*err_token = (*tokens)->str;
+	if (!ms_valid_token(*tokens, err_token) || !ms_verify_brace(*tokens))
 		return (ERR_FAILED);
-	tmp = tokens;
+	tmp = (*tokens);
 	hdcount = 0;
-	while (tmp)
+	while (tmp->type != TK_NEWLIN)
 	{
 		hdcount += ((tmp->type & TK_REDIRS) && !ft_strncmp(tmp->str, "<<", 3));
 		tmp = tmp->next;
 	}
+	ms_remove_token(&tmp);
 	if (hdcount > 16)
 		return (0b100);
 	return (ERR_NOERRS);

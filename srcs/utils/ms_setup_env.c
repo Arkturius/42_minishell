@@ -6,34 +6,40 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:08:31 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:36:23 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 22:40:09 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_envvar	*ms_update_env(t_envvar **env)
+t_envvar	*ms_update_env(int reset, t_envvar **env)
 {
-	static t_envvar	*envlist;
+	static t_envvar	*envlist = NULL;
 
 	if (!envlist || env)
-		envlist = *env;
+	{
+		if (env)
+			envlist = *env;
+	}
+	if (reset)
+		envlist = NULL;
 	return (envlist);
 }
 
-void	ms_create_env(t_envvar **env, char **argv, int i)
+void	ms_create_env(t_envvar **env, char **argv)
 {
 	char		*tmp;
+	t_envvar	*tmp_env;
 
-	if (i)
-	{
-		tmp = ms_get_pwd();
-		ms_set_var(env, "PWD", tmp);
-		tmp = ft_strjoin(ms_get_pwd(), argv[0], "/", 0b01);
-		ms_set_var(env, "_", tmp);
-	}
-	tmp = ft_itoa(1);
+	tmp = ms_get_pwd();
+	ms_set_var(env, "PWD", tmp);
+	tmp_env = ms_get_var(*env, "SHLVL");
+	if (tmp_env && tmp_env->values)
+		tmp = ft_itoa(ft_atoi(tmp_env->values[0]) + 1);
+	else
+		tmp = ft_strdup("1");
 	ms_set_var(env, "SHLVL", tmp);
+	ms_set_var(env, "_", ft_strdup(argv[0]));
 }
 
 t_envvar	*ms_setup_env(char **argv, char **envp)
@@ -47,7 +53,7 @@ t_envvar	*ms_setup_env(char **argv, char **envp)
 	tmp = NULL;
 	while (envp[++i])
 		ms_add_var(&env, ms_init_var(envp[i]));
-	ms_create_env(&env, argv, i);
+	ms_create_env(&env, argv);
 	if (ms_get_var(env, "PWD") && ms_get_var(env, "PWD")->values)
 		tmp = ft_strjoin(ms_get_var(env, "PWD")->values[0], "/.logo", "", 0b00);
 	ms_set_var(&env, "LOGOP", tmp);

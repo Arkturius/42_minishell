@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:19:40 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/10 21:29:13 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:24:51 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@ int	ms_qs_update(char c, t_qstate *qs)
 	return (*qs != tmp);
 }
 
-int	ms_dqstrlen(char *str)
+int	ms_dqstrlen(char *str, t_qstate qs)
 {
-	t_qstate	qs;
 	int			len;
 
-	qs = QU_ZERO;
 	len = 0;
 	while (*str)
 	{

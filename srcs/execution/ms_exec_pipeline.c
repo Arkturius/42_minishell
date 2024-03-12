@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:04:23 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:21:19 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 12:09:58 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ms_exec_mux(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)
 void	ms_wait_pipeline(t_pid *tmp, t_executer *ex, t_mode mode)
 {
 	t_pid	*towait;
+	int		last_err;
 	int		err_code;
 	int		first;
 
@@ -49,9 +50,10 @@ void	ms_wait_pipeline(t_pid *tmp, t_executer *ex, t_mode mode)
 		waitpid(towait->pid, &err_code, 0);
 		ms_command_exit(err_code);
 		if (!first++)
-			g_exit_code = WEXITSTATUS(err_code);
+			last_err = WEXITSTATUS(err_code);
 		free(towait);
 	}
+	g_exit_code = last_err;
 }
 
 void	ms_exec_pipe(t_node *tree, t_fd node_fd, t_executer *ex, t_mode mode)

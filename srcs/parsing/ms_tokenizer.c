@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:55:34 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/11 11:56:04 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 20:52:00 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	ms_is_token(char *str, t_qstate qs)
 		return (1);
 	while (*tmp && (ft_strncmp(str, *tmp, ft_strlen(*tmp)) || qs != QU_ZERO))
 		tmp++;
+	if (tmp - tokens == 7 && qs == QU_ZERO && *(str - 1) != ' ')
+		return (0);
 	return (ft_strlen(*tmp));
 }
 
@@ -39,8 +41,8 @@ t_token_type	ms_ttyper(char *str, t_qstate qs)
 		return (TK_BINOPS);
 	if (!ft_strncmp(str, "|", 1))
 		return (TK_PIPEXS);
-	if (!ft_strncmp(str, ">", 1) || !ft_strncmp(str, "<", 1) \
-		|| !ft_strncmp(str, "2>", 2))
+	if (!ft_strncmp(str, "2>", 2) || !ft_strncmp(str, ">", 1) \
+		|| !ft_strncmp(str, "<", 1))
 		return (TK_REDIRS);
 	return (TK_STRING);
 }

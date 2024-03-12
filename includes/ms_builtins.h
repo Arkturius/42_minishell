@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_builtins.h                                      :+:      :+:    :+:   */
+/*   ms_builtins.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 07:14:12 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:15:07 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 22:38:34 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,20 +119,20 @@ void		ms_get_directory_vars(t_envvar *envp, t_envvar **vars);
 /**
  * @brief			Updates and returns environment variables linked list.
  * 
+ * @param reset		Reset boolean.
  * @param env		Linked list to update, NULL to just give back env.
  * 
  * @return			Linked list pointer.
 */
-t_envvar	*ms_update_env(t_envvar **env);
+t_envvar	*ms_update_env(int reset, t_envvar **env);
 
 /**
  * @brief			Initialize basic environment.
  * 
  * @param env		Empty linked list adress.
  * @param argv		String array argv.
- * @param i			Iterator from ms_setup_env
 */
-void		ms_create_env(t_envvar **env, char **argv, int i);
+void		ms_create_env(t_envvar **env, char **argv);
 
 /**
  * @brief			Manage directory change.

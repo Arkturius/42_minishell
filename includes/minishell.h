@@ -59,57 +59,115 @@
 
 /* PROMPTS ****************************************************************** */
 
-# define P_SUCCESS "\001\033[32;1m\002$?\001\033[0m\002 "
+// Success error prompt head.
+# ifndef P_SUCCESS
+#  define P_SUCCESS "\001\033[32;1m\002$?\001\033[0m\002 "
+# endif
 
-# define P_FAIL "\001\033[31;1m\002$?\001\033[0m\002 "
+// Fail error prompt head.
+# ifndef P_FAIL
+#  define P_FAIL "\001\033[31;1m\002$?\001\033[0m\002 "
+# endif
 
-# define P_TAIL "\001\033[37;1m\002 Minishell$\001\033[0m\002 "
+// Tail of the prompt.
+# ifndef P_TAIL
+#  define P_TAIL "\001\033[37;1m\002 Minishell$\001\033[0m\002 "
+# endif
 
-# define P_SDQUOTE "\001\033[36;1m\002''  dquote:\001\033[0m\002 > "
+// Single quote prompt.
+# ifndef P_SDQUOTE
+#  define P_SDQUOTE "\001\033[36;1m\002''  dquote:\001\033[0m\002 > "
+# endif
 
-# define P_DDQUOTE "\001\033[34;1m\002\"\"  dquote:\001\033[0m\002 > "
+// Double quote prompt.
+# ifndef P_DDQUOTE
+#  define P_DDQUOTE "\001\033[34;1m\002\"\"  dquote:\001\033[0m\002 > "
+# endif
 
-# define P_HEREDOC "\001\033[35;1m\002HD  here-doc:\001\033[0m\002 > "
+// Heredoc prompt.
+# ifndef P_HEREDOC
+#  define P_HEREDOC "\001\033[35;1m\002HD  here-doc:\001\033[0m\002 > "
+# endif
 
-# define P_ERROR "\001\033[31;1m\002/!\\ ERROR! > "
+// Error prompt display.
+# ifndef P_ERROR
+#  define P_ERROR "\001\033[31;1m\002/!\\ ERROR! > "
+# endif
 
-# define P_WARNING "\001\033[33;1m\002/!\\ WARNING! > "
+// Warning prompt display.
+# ifndef P_WARNING
+#  define P_WARNING "\001\033[33;1m\002/!\\ WARNING! > "
+# endif
 
 /* ERROR MESSAGES *********************************************************** */
 
-# define ES_NOTSET "%scd: %s not set\n"
+# ifndef ES_NOTSET
+#  define ES_NOTSET "%scd: %s not set\n"
+# endif
 
-# define ES_NOFORD "%s%s no such file or directory\n"
+# ifndef ES_NOFORD
+#  define ES_NOFORD "%s%s no such file or directory\n"
+# endif
 
-# define ES_TMARGS "%s%s: too many arguments\n"
+# ifndef ES_TMARGS
+#  define ES_TMARGS "%s%s: too many arguments\n"
+# endif
 
-# define ES_NOTNUM "%s%s: numeric argument required\n"
+# ifndef ES_NOTNUM
+#  define ES_NOTNUM "%s%s: numeric argument required\n"
+# endif
 
-# define ES_NOTVAL "%sexport: `%s': not a valid identifier\n"
+# ifndef ES_NOTVAL
+#  define ES_NOTVAL "%sexport: `%s': not a valid identifier\n"
+# endif
 
-# define ES_NOPERM "%s%s: Permission denied\n"
+# ifndef ES_NOPERM
+#  define ES_NOPERM "%s%s: Permission denied\n"
+# endif
 
-# define ES_ISADIR "%s%s: Is a directory\n"
+# ifndef ES_ISADIR
+#  define ES_ISADIR "%s%s: Is a directory\n"
+# endif
 
-# define ES_INVOPT "%s%c%c: Invalid option\n"
+# ifndef ES_INVOPT
+#  define ES_INVOPT "%s%c%c: Invalid option\n"
+# endif
 
-# define ES_HDSTOP "%s here-document delimited by end-of-file, (wanted `%s')\n"
+# ifndef ES_HDSTOP
+#  define ES_HDSTOP "%s here-document delimited by end-of-file, (wanted `%s')\n"
+# endif
 
-# define ES_DQSTOP "%sunexpected EOF while looking for matching `%s\'\n"
+# ifndef ES_DQSTOP
+#  define ES_DQSTOP "%sunexpected EOF while looking for matching `%s\'\n"
+# endif
 
-# define ES_SYNTXQ "%ssyntax error%s\n"
+# ifndef ES_SYNTXQ
+#  define ES_SYNTXQ "%ssyntax error%s\n"
+# endif
 
-# define ES_SYNTXT "%ssyntax error near unexcepted token `%s'\n"
+# ifndef ES_SYNTXT
+#  define ES_SYNTXT "%ssyntax error near unexcepted token `%s'\n"
+# endif
 
-# define ES_SYNTXL "%ssyntax error\n"
+# ifndef ES_SYNTXL
+#  define ES_SYNTXL "%ssyntax error\n"
+# endif
 
-# define ES_HLIMIT "%smaximum here-document count exceeded\n"
+# ifndef ES_HLIMIT
+#  define ES_HLIMIT "%smaximum here-document count exceeded\n"
+# endif
 
-# define ES_INVFDS "%s%s: no more fds. Aborting\n"
+# ifndef ES_INVFDS
+#  define ES_INVFDS "%s%s: no more fds. Aborting\n"
+# endif
 
-# define ES_AMBRED "%s%s: ambiguous redirect\n"
+# ifndef ES_AMBRED
+#  define ES_AMBRED "%s%s: ambiguous redirect\n"
+# endif
 
-# define ES_NOARGS "%s%s: argument required\n"
+# ifndef ES_NOARGS
+#  define ES_NOARGS "%s%s: argument required\n"
+# endif
 
 /* OPENING MODES ************************************************************ */
 

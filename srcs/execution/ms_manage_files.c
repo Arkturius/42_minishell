@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:02:28 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:23:53 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:04:01 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ t_error	ms_file_checker(char **file, int mode)
 
 	var = ft_strdup(*file);
 	if (ft_strchr(*file, '$'))
-		ms_replace_vars(ms_update_env(NULL), file, QU_ZERO, 0);
-	files = ms_quoted_split(*file, " ");
+		ms_replace_vars(ms_update_env(0, NULL), file, QU_ZERO, 0);
+	files = ms_quoted_split(*file, "\026");
 	if (ft_tab_len(files) > 1)
 	{
 		ms_error_message(ERR_AMBRED, var);

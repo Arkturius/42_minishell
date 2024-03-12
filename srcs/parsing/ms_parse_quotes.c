@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:11:30 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:27:58 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:26:40 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ms_dequote_string(char **str, t_qstate qs)
 	char	*res;
 
 	tmp = *str;
-	res = malloc((ms_dqstrlen(*str) + 1) * sizeof(char));
+	res = malloc((ms_dqstrlen(*str, qs) + 1) * sizeof(char));
 	if (!res)
 		return ;
 	tmpr = res;

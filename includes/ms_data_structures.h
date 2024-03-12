@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_data_structures.h                               :+:      :+:    :+:   */
+/*   ms_data_structures.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:05:54 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:15:30 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:25:18 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,13 @@ typedef struct s_executer
 	t_pid	*pids;
 }	t_executer;
 
+/**
+ * @struct			s_fd
+ * @brief			File descriptor duo
+ * 
+ * @param in		(in)			Infile.
+ * @param out		(out)			Outfile.
+*/
 typedef struct s_fd
 {
 	int	in;

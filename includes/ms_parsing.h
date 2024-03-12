@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:23:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/11 11:57:40 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 20:12:37 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ char		*ms_open_dquote(int tmp_fd, t_qstate qs);
  * @param str		String to format.
  * @param qs		Carried quote state.
 */
-char	\
-	**ms_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q);
+void	\
+	ms_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q);
 
 /**
  * @brief			Insert environment variable into a string array.
@@ -149,7 +149,7 @@ void		ms_remove_braces(t_token **tokens);
  * 
  * @return			1 if the linked list is valid, 0 otherwise.
 */
-int			ms_verify_token(t_token *tokens, char **err_token);
+int			ms_verify_token(t_token **tokens, char **err_token);
 
 /* WILDCARD ***************************************************************** */
 
@@ -226,10 +226,11 @@ void		ms_print_logo(t_envvar *envp);
  * @brief			Unquoted string len.
  * 
  * @param str		String.
+ * @param qs		Carried quote state.
  * 
  * @return			Unquoted len of the string.
 */
-int			ms_dqstrlen(char *str);
+int			ms_dqstrlen(char *str, t_qstate qs);
 
 /**
  * @brief			Skip a part of a string, updating its pointer and qs

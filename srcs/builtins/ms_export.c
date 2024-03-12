@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:06:15 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:36:57 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:40:42 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ int	ms_export(t_command *cmd)
 				errcode = ERR_FAILED;
 		}
 	}
-	ms_update_env(cmd->envp);
+	ms_update_env(0, cmd->envp);
 	return (errcode);
 }

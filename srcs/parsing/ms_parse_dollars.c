@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:19:03 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/11 11:47:50 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 23:46:02 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,19 @@ void	ms_quoted_skip(char **str, int len, t_qstate *qs)
 void	ms_insert_var(t_envvar *var_ptr, char ***new, t_qstate qs)
 {
 	char	*value;
+	char	**split;
 
 	if (var_ptr)
 	{
 		value = ms_get_varstring(var_ptr, 0, 0);
 		if (qs == QU_ZERO && ms_verify_wildcard(value, QU_ZERO))
 			ms_replace_wildcard(&value);
+		if (qs == QU_ZERO)
+		{
+			split = ft_split(value, ' ');
+			free(value);
+			value = ft_strsjoin(split, "\026", 0b01);
+		}
 		ft_strapp(new, value);
 	}
 }
@@ -82,7 +89,7 @@ void	ms_manage_vars(t_envvar *vars, char *start, char ***new, t_qstate qs)
 	free(name);
 }
 
-char	**ms_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q)
+void	ms_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q)
 {
 	char	*tmp;
 	char	**new;
@@ -90,7 +97,7 @@ char	**ms_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q)
 	tmp = *str;
 	new = NULL;
 	if (!tmp)
-		return (NULL);
+		return ;
 	while (*tmp)
 	{
 		if (ft_strcspn(tmp, "$") > 0)
@@ -107,6 +114,5 @@ char	**ms_replace_vars(t_envvar *vars, char **str, t_qstate qs, int no_q)
 		tmp += ms_var_len(tmp);
 	}
 	free(*str);
-	*str = ft_strsjoin(new, NULL, 0b00);
-	return (new);
+	*str = ft_strsjoin(new, NULL, 0b01);
 }

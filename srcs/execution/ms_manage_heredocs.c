@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:32:59 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:24:35 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:41:26 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ms_parse_line(char **line, int hd_fd, int exp)
 	static int	firstline = 0;
 
 	if (exp)
-		ms_replace_vars(ms_update_env(NULL), line, QU_IGNORE, 1);
+		ms_replace_vars(ms_update_env(0, NULL), line, QU_IGNORE, 1);
 	test = write(hd_fd, *line, ft_strlen(*line));
 	if (firstline++)
 		write(hd_fd, "\n", 1);
@@ -95,6 +95,7 @@ int	ms_get_heredoc(char *delim, char *hd_file)
 	int		hd_fd;
 	int		err_code;
 
+	err_code = 0;
 	ms_signal_state(SIGHANDLER_IGN);
 	hd_pid = fork();
 	if (hd_pid == -1)
@@ -107,7 +108,7 @@ int	ms_get_heredoc(char *delim, char *hd_file)
 		ms_clear_tree(ms_tree_holder(0, NULL));
 		rl_clear_history();
 		err_code = ms_heredoc_line(delim, hd_file, hd_fd);
-		ms_clear_env(ms_update_env(NULL));
+		ms_clear_env(ms_update_env(0, NULL));
 		ft_close_v(4, hd_fd, STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO);
 		exit(err_code);
 	}

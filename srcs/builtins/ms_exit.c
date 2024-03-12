@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 07:38:34 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:10:16 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 14:59:20 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ long	ms_exit_atoi(char *str, t_command *cmd)
 	sign = 0;
 	while (ft_isspace(*str))
 		str++;
+	if (!ft_strncmp(str, "-9223372036854775808", 21))
+		return (0);
 	if (*str == '-' || *str == '+')
 		sign = (*(str++) == '-');
 	while (ft_isdigit(*str) && (n * 10 + (int){*(str) - '0'} >= n))

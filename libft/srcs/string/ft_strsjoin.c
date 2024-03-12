@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:26:32 by rgramati          #+#    #+#             */
-/*   Updated: 2024/02/29 18:00:33 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:04:20 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*ft_manage_join(char **strs, char **sep, int *tofree)
 	{
 		if (*tofree & 0b10)
 			free(*sep);
-		return (NULL);
+		return (ft_strdup(""));
 	}
 	if (!*strs)
 	{

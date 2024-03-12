@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:42:43 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:23:19 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:24:27 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	ms_args_updater(t_command *cmd)
 	{
 		if (ft_strchr(*tmp, '$'))
 		{
-			raw = ms_replace_vars(*cmd->envp, tmp, QU_ZERO, 1);
-			ft_strapp(&new_args, ft_strsjoin(raw, NULL, 0b01));
-			tmp++;
+			ms_replace_vars(*cmd->envp, tmp, QU_ZERO, 1);
+			raw = ft_split(*(tmp++), '\026');
+			ft_strtabjoin(&new_args, raw);
 			continue ;
 		}
 		if (ft_strncmp(*(cmd->args), "export", 7))
@@ -77,8 +77,10 @@ t_error	ms_command_updater(t_command *cmd)
 		cmd->path = NULL;
 		cmd->path = ms_get_path(*cmd->args, *(cmd->envp));
 	}
-	if ((!cmd->path && !cmd->redirs) || \
-		(**cmd->args == '.' && ft_strlen(*cmd->args) == 1))
+	if ((!cmd->path && !cmd->redirs))
+		return (ERR_NOTCMD);
+	if (cmd->args && *cmd->args && **cmd->args == '.' \
+		&& ft_strlen(*cmd->args) == 1)
 		return (ERR_NOTCMD);
 	return (ERR_NOERRS);
 }

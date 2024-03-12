@@ -58,7 +58,7 @@ void	ms_h_heredoc(int signal)
 	{
 		ft_printf("^C\n");
 		unlink(ms_hd_holder(NULL, 0));
-		ms_clear_env(ms_update_env(NULL));
+		ms_clear_env(ms_update_env(0, NULL));
 		free(ms_hd_holder(NULL, 0));
 		free(ms_hd_holder(NULL, 1));
 		fd = *(int *)ms_hd_holder(NULL, 2);

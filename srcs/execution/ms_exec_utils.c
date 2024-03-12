@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:48:51 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/11 10:04:23 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:32:42 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,6 @@ void	ms_fork_exit(t_executer *ex)
 {
 	ms_close_executer(ex);
 	rl_clear_history();
-	ms_clear_env(ms_update_env(NULL));
+	ms_clear_env(ms_update_env(0, NULL));
 	ms_clear_tree(ms_tree_holder(0, NULL));
 }

@@ -38,11 +38,11 @@ int	ms_pwd(t_command *cmd)
 	char	cwd[65536];
 
 	(void) cmd;
-	if (getcwd(cwd, sizeof(cwd)))
-		ft_dprintf(cmd->outfile, "%s\n", cwd);
+	if (getcwd(cwd, sizeof(cwd)) && 0)
+		ft_printf("%s\n", cwd);
 	else
 	{
-		perror("getcwd() error");
+		ft_dprintf(STDERR_FILENO, "%spwd: getcwd syscall error\n", P_ERROR);
 		return (ERR_FAILED);
 	}
 	return (ERR_NOERRS);
@@ -50,15 +50,12 @@ int	ms_pwd(t_command *cmd)
 
 char	*ms_get_prompt_string(t_envvar *envp)
 {
-	static t_envvar		*save = NULL;
-	char				*prompt;
-	char				*pwd;
+	char	*prompt;
+	char	*pwd;
 
-	if (envp)
-		save = envp;
-	if (ms_get_var(save, "PWD"))
+	if (ms_get_var(envp, "PWD"))
 	{
-		pwd = ms_trim_pwd(ms_get_var(save, "PWD")->values[0]);
+		pwd = ms_trim_pwd(ms_get_var(envp, "PWD")->values[0]);
 		pwd = ft_strjoin(pwd, " ~ ", 0, 0b01);
 	}
 	else
@@ -67,6 +64,6 @@ char	*ms_get_prompt_string(t_envvar *envp)
 		prompt = ft_strjoin(P_SUCCESS, P_TAIL, 0, 0b00);
 	else
 		prompt = ft_strjoin(P_FAIL, P_TAIL, 0, 0b00);
-	prompt = ft_strjoin(prompt, pwd, 0, 3);
+	prompt = ft_strjoin(prompt, pwd, 0, 0b011);
 	return (prompt);
 }

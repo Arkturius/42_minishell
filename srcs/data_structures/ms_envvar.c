@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 22:33:30 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:12:17 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/12 20:52:17 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,34 @@ void	ms_remove_var(t_envvar **vars, char *name)
 
 	tmp = *vars;
 	prv = tmp;
-	head = NULL;
+	head = *vars;
 	while (tmp && ft_strcmp(tmp->name, name))
 	{
 		prv = tmp;
 		tmp = tmp->next;
 	}
+	if (!tmp || prv == tmp)
+		return ;
 	if (prv == tmp)
 		head = tmp->next;
-	if (tmp && prv)
-	{
+	else
 		prv->next = tmp->next;
-		ms_del_var(tmp);
-	}
-	if (head)
-		*vars = head;
+	ms_del_var(tmp);
+	*vars = head;
+	ms_update_env(!*vars, vars);
 }
 
 void	ms_del_var(t_envvar *var)
 {
+	if (!var)
+		return ;
 	free(var->name);
 	if (var->values && *(var->values))
 		ft_free_tab((void **) var->values);
 	else
 		free(var->values);
 	free(var);
+	var = NULL;
 }
 
 void	ms_clear_env(t_envvar *vars)
