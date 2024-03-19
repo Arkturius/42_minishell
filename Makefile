@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/12 23:01:37 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/19 19:19:07 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,10 +100,6 @@ ALL_SRCS	:=	$(SRC_DATA) 						\
 				$(SRC_SETUP)						\
 				minishell.c
 				
-SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
-
-OBJS		:=	$(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
-
 HEADERS		:=	includes/minishell.h 				\
 				includes/ms_enumerates.h			\
 				includes/ms_data_structures.h 		\
@@ -112,9 +108,17 @@ HEADERS		:=	includes/minishell.h 				\
 				includes/ms_file_manager.h			\
 				includes/ms_execution.h
 
+SRCS		:=	$(ALL_SRCS:%=$(SRCS_DIR)/%)
+
+OBJS		:=	$(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
+
 CC          := cc
 
-CFLAGS      := -g -Wall -Wextra -Werror
+CFLAGS      := -g3 -Wall -Wextra -Werror
+
+ifeq ($(DEBUG), 1)
+	CFLAGS 	+= -fsanitize=address -static-libsan
+endif
 
 IFLAGS	    := -I $(LFT_DIR)/includes -I ./includes
 

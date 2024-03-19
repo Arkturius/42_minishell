@@ -38,7 +38,7 @@ int	ms_pwd(t_command *cmd)
 	char	cwd[65536];
 
 	(void) cmd;
-	if (getcwd(cwd, sizeof(cwd)) && 0)
+	if (getcwd(cwd, sizeof(cwd)))
 		ft_printf("%s\n", cwd);
 	else
 	{

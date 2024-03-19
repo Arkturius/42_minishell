@@ -6,37 +6,11 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:42:43 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/12 18:24:27 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:47:42 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**ms_quoted_split(char *str, char *sep)
-{
-	t_qstate	qs;
-	char		**new;
-	char		*tmp;
-	char		*hold;
-
-	new = NULL;
-	qs = QU_ZERO;
-	if (!str || !sep || !*str)
-		return (ft_strtab(ft_strdup("")));
-	tmp = str;
-	while (*str && *tmp)
-	{
-		tmp = str;
-		while (*tmp && (!ft_strchr(sep, *tmp) || qs != QU_ZERO))
-			ms_qs_update(*(tmp++), &qs);
-		hold = ft_strndup(str, tmp - str);
-		ft_strapp(&new, hold);
-		str = tmp;
-		while (*str && ft_strchr(sep, *str))
-			str++;
-	}
-	return (new);
-}
 
 void	ms_args_updater(t_command *cmd)
 {
@@ -55,21 +29,39 @@ void	ms_args_updater(t_command *cmd)
 			ft_strtabjoin(&new_args, raw);
 			continue ;
 		}
-		if (ft_strncmp(*(cmd->args), "export", 7))
-		{
-			if (ms_verify_wildcard(*tmp, QU_ZERO))
-				ms_replace_wildcard(tmp);
-		}
-		ms_dequote_string(tmp, QU_ZERO);
+		if (ft_strchr(*tmp, '*'))
+			ms_replace_wildcard(tmp);
+		else
+			ms_dequote_string(tmp, QU_ZERO);
 		ft_strapp(&new_args, ft_strdup(*(tmp++)));
 	}
 	ft_free_tab((void **)cmd->args);
 	cmd->args = new_args;
 }
 
+void	ms_args_splitter(t_command *cmd)
+{
+	char	**tmp;
+	char	**new;
+
+	tmp = cmd->args;
+	new = NULL;
+	while (tmp && *tmp)
+	{
+		if (ft_strchr(*tmp, '\026'))
+			ft_strtabjoin(&new, ft_split(*tmp, '\026'));
+		else
+			ft_strapp(&new, ft_strdup(*tmp));
+		tmp++;
+	}
+	ft_free_tab((void **)cmd->args);
+	cmd->args = new;
+}
+
 t_error	ms_command_updater(t_command *cmd)
 {
 	ms_args_updater(cmd);
+	ms_args_splitter(cmd);
 	if (cmd->args && *cmd->args && \
 		**cmd->args != '.' && !ft_strchr(*cmd->args, '/'))
 	{

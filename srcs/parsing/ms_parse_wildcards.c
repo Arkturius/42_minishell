@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:31:16 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:37:13 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:02:00 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*ms_format_wildcard(char ***files)
 
 	formatted = NULL;
 	ft_sort_lowstrs_tab(*files, ft_tab_len(*files));
-	return (ft_strsjoin(*files, ft_strdup(" "), 0b10));
+	return (ft_strsjoin(*files, ft_strdup("\026"), 0b10));
 }
 
 void	ms_replace_wildcard(char **str)
@@ -85,15 +85,18 @@ void	ms_replace_wildcard(char **str)
 	char	*wcs;
 	char	*deq;
 
-	deq = ft_strdup(*str);
-	ms_dequote_string(&deq, QU_ZERO);
-	files = ms_wildcard_array(deq);
-	free(deq);
-	if (files && *files)
+	if (ms_verify_wildcard(*str, QU_ZERO))
 	{
-		free(*str);
-		wcs = ms_format_wildcard(&files);
-		*str = wcs;
+		deq = ft_strdup(*str);
+		ms_dequote_string(&deq, QU_ZERO);
+		files = ms_wildcard_array(deq);
+		free(deq);
+		if (files && *files)
+		{
+			free(*str);
+			wcs = ms_format_wildcard(&files);
+			*str = wcs;
+		}
+		ft_free_tab((void **)(files));
 	}
-	ft_free_tab((void **)(files));
 }

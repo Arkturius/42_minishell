@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 00:56:54 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/12 20:49:25 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:59:26 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	ms_sub_valid_token(t_token *t)
 	strs = TK_STRING | TK_REDIRS;
 	if (t->type == TK_NEWLIN)
 		return (1);
-	if ((t->type & TK_BINOPS) && (t->next->type & bops))
+	if ((t->type & TK_BINOPS) && ((t->next->type & bops) || \
+		(!ft_strncmp(t->next->str, ")", 2))))
 		return (0);
 	else if (t->type == TK_REDIRS && !(t->next->type == TK_STRING))
 		return (0);
@@ -45,9 +46,9 @@ int	ms_valid_token(t_token *t, char **err_token)
 		return (0);
 	while (t && ms_sub_valid_token(t))
 	{
-		if (t->next)
-			*err_token = t->next->str;
 		t = t->next;
+		if (t && t->next && t->next->type != TK_NEWLIN)
+			*err_token = t->next->str;
 	}
 	if (!t)
 		return (1);
