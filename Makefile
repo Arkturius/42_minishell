@@ -6,7 +6,7 @@
 #    By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 14:17:35 by rgramati          #+#    #+#              #
-#    Updated: 2024/03/19 19:19:07 by rgramati         ###   ########.fr        #
+#    Updated: 2024/03/22 16:44:25 by rgramati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,8 @@ SRC_PROMPT	:=  prompt/ms_prompt.c					\
 
 SRC_SETUP	:=  utils/ms_setup_env.c				\
 				utils/ms_handle_signals.c			\
-				utils/ms_error_handling.c
+				utils/ms_error_handling.c			\
+				utils/ms_utils.c
 
 ALL_SRCS	:=	$(SRC_DATA) 						\
 				$(SRC_BUILTIN)						\

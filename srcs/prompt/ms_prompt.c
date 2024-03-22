@@ -64,9 +64,9 @@ t_error	ms_to_tokens(t_token **tokens, char *line, t_envvar **envp)
 	}
 	ms_tilde_expansion(tokens, ms_get_var(*envp, "HOME"));
 	ms_remove_braces(tokens);
+	free(line);
 	if (!*tokens)
 		return (ERR_FAILED);
-	free(line);
 	if (syntax & 0b100)
 		ms_heredoc_limit(*tokens, envp);
 	return (ERR_NOERRS);
@@ -88,7 +88,7 @@ t_error	ms_to_tree_exec(t_token **tokens, t_node **tree, t_envvar **envp)
 	ms_signal_state(SIGHANDLER_IGN);
 	base_fd = (t_fd){0, 1};
 	ms_exec_mux(*tree, base_fd, exe, EX_LWAIT);
-	while (exe->pids)
+	while (exe && exe->pids)
 	{
 		towait = ms_pid_pop(&(exe->pids));
 		waitpid(towait->pid, &err_code, 0);
@@ -118,14 +118,12 @@ t_error	ms_heredoc_opening(t_node *tree)
 void	ms_prompt_handler(t_envvar **envp)
 {
 	char		*line;
-	int			first;
 	t_token		*tokens;
 	t_node		*tree;
 
 	line = NULL;
 	tokens = NULL;
 	tree = NULL;
-	first = 0;
 	if (ms_prompt_line(&line, envp))
 		return ;
 	if (ms_to_tokens(&tokens, line, envp) || !tokens)

@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:08:31 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/11 22:40:09 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:50:36 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ t_envvar	*ms_setup_env(char **argv, char **envp)
 	while (envp[++i])
 		ms_add_var(&env, ms_init_var(envp[i]));
 	ms_create_env(&env, argv);
-	if (ms_get_var(env, "PWD") && ms_get_var(env, "PWD")->values)
-		tmp = ft_strjoin(ms_get_var(env, "PWD")->values[0], "/.logo", "", 0b00);
+	tmp = ft_strjoin(ms_get_pwd(), "/.logo", "", 0b01);
 	ms_set_var(&env, "LOGOP", tmp);
 	return (env);
 }

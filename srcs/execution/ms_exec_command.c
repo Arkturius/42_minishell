@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:45:23 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:20:56 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:35:25 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ t_error	ms_command_checker(t_command *cmd, t_executer *ex)
 		ms_error_message(ERR_NOTCMD, err_str);
 		return (ERR_FAILED);
 	}
-	else if (!S_ISREG(st.st_mode))
+	else if (!S_ISREG(st.st_mode) || access(cmd->path, R_OK))
 	{
-		if (S_ISFIFO(st.st_mode))
+		if (S_ISFIFO(st.st_mode) || access(cmd->path, R_OK))
 			ms_error_message(ERR_NOPERM, cmd->path);
 		else if (S_ISDIR(st.st_mode))
 			ms_error_message(ERR_ISADIR, cmd->path);
