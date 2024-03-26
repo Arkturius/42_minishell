@@ -48,18 +48,16 @@ int	ms_pwd(t_command *cmd)
 	return (ERR_NOERRS);
 }
 
-char	*ms_get_prompt_string(t_envvar *envp)
+char	*ms_get_prompt_string(void)
 {
 	char	*prompt;
+	char	*tmp;
 	char	*pwd;
 
-	if (ms_get_var(envp, "PWD"))
-	{
-		pwd = ms_trim_pwd(ms_get_var(envp, "PWD")->values[0]);
-		pwd = ft_strjoin(pwd, " ~ ", 0, 0b01);
-	}
-	else
-		pwd = ft_strdup(" ~ ");
+	tmp = ms_get_pwd();
+	pwd = ms_backtrim(tmp, '/');
+	free(tmp);
+	pwd = ft_strjoin(pwd, " ~ ", 0, 0b01);
 	if (!g_exit_code)
 		prompt = ft_strjoin(P_SUCCESS, P_TAIL, 0, 0b00);
 	else

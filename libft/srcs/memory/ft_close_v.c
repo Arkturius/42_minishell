@@ -6,22 +6,19 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:46:59 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/07 15:01:06 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:51:45 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_close_v(int nb, int fd, ...)
+void	ft_close_v(int nb, ...)
 {
 	va_list	files;
-	int		i;
 	int		curr;
 
-	i = 1;
-	close(fd);
-	va_start(files, fd);
-	while (i++ < nb)
+	va_start(files, nb);
+	while (nb--)
 	{
 		curr = va_arg(files, int);
 		if (curr >= 0)

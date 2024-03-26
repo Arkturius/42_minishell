@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:48:51 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/13 16:54:04 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:54:10 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ms_fake_pid_child(int err_code, t_executer *ex)
 	{
 		ms_close_tree_rec(ms_tree_holder(0, NULL));
 		ms_fork_exit(ex);
+		ft_close_v(3, STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO);
 		exit(err_code);
 	}
 	ms_pid_push(&(ex->pids), ms_init_pid(child));

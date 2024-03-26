@@ -19,7 +19,7 @@ t_error	ms_prompt_line(char **line, t_envvar **envp)
 	char	*prompt;
 	int		err_code;
 
-	prompt = ms_get_prompt_string(*envp);
+	prompt = ms_get_prompt_string();
 	*line = readline(prompt);
 	free(prompt);
 	if (*line && !ms_isnt_empty(*line))

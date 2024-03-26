@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:23:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/12 20:12:37 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:13:31 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,12 +208,10 @@ t_node		*ms_build_tree(t_token *tokens, t_envvar **env);
 
 /**
  * @brief			Get prompt total string.
- * 
- * @param envp		Linked list.
- * 
+ *
  * @return			Formatted total prompt string.
 */
-char		*ms_get_prompt_string(t_envvar *envp);
+char		*ms_get_prompt_string(void);
 
 /**
  * @brief			Print MinishellRC logo.

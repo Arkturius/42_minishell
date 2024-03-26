@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:26:32 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/12 19:04:20 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/22 20:34:39 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strsjoin(char **strs, char *sep, int tofree)
 	int		len;
 
 	check = ft_manage_join(strs, &sep, &tofree);
-	if (check != sep)
+	if (check != sep || !strs)
 		return (check);
 	tmp = strs;
 	len = 1;

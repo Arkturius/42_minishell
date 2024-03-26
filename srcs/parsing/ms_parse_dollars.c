@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:19:03 by ycontre           #+#    #+#             */
-/*   Updated: 2024/03/19 19:03:41 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/22 20:25:26 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ms_var_len(char *str)
 	if (!ft_isalnum(*tmp) || *tmp == '"')
 		return (1);
 	tmp++;
-	while (*tmp && ft_isalnum(*tmp) && *tmp != '?')
+	while (*tmp && ((ft_isalnum(*tmp) && *tmp != '?') || *tmp == '_'))
 		tmp++;
 	return (tmp - str);
 }
@@ -54,7 +54,10 @@ void	ms_insert_var(t_envvar *var_ptr, char ***new, t_qstate qs)
 		{
 			split = ft_split(value, ' ');
 			free(value);
-			value = ft_strsjoin(split, "\026", 0b01);
+			if (split)
+				value = ft_strsjoin(split, "\026", 0b01);
+			else
+				value = NULL;
 		}
 		ft_strapp(new, value);
 	}
