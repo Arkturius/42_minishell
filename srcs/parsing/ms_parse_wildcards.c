@@ -6,19 +6,17 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:31:16 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/19 19:02:00 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/28 21:21:18 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ms_regex_wildcard(char *file, char *rule, char *tmp_f, char *tmp_r)
+int	ms_regex_wildcard(char *rule, char *file, char *tmp_r)
 {
 	char	*next;
 
-	tmp_f = file;
-	tmp_r = rule;
-	while (*tmp_f)
+	while (*file)
 	{
 		next = NULL;
 		while (*tmp_r == '*')
@@ -26,19 +24,19 @@ int	ms_regex_wildcard(char *file, char *rule, char *tmp_f, char *tmp_r)
 		if (!*tmp_r)
 			return (*(tmp_r - 1) == '*');
 		if (!ft_strchr(tmp_r, '*'))
-			next = ft_strrchr(tmp_f, *tmp_r);
-		else if (tmp_r != rule || *tmp_r == *tmp_f)
-			next = ft_strchr(tmp_f, *tmp_r);
+			next = ft_strrchr(file, *tmp_r);
+		else if (tmp_r != rule || *tmp_r == *file)
+			next = ft_strchr(file, *tmp_r);
 		if (next)
-			tmp_f += (next - tmp_f);
+			file += (next - file);
 		else
 			return (0);
-		while (*tmp_f && *tmp_r && *tmp_r != '*' && *(tmp_f++) == *(tmp_r++))
-			;
+		while (*file && *tmp_r && *tmp_r != '*' && *tmp_r == *(file++))
+			tmp_r++;
 	}
 	while (*tmp_r && *tmp_r == '*')
 		tmp_r++;
-	return (!*tmp_f && !*tmp_r);
+	return (!*file && !*tmp_r);
 }
 
 char	**ms_wildcard_array(char *wcstr)
@@ -46,7 +44,7 @@ char	**ms_wildcard_array(char *wcstr)
 	char			*dir;
 	char			**files;
 	DIR				*cdir;
-	struct dirent	*cdir_entry;
+	struct dirent	*dentry;
 
 	dir = ms_get_pwd();
 	cdir = opendir(dir);
@@ -57,14 +55,14 @@ char	**ms_wildcard_array(char *wcstr)
 		return (NULL);
 	}
 	free(dir);
-	cdir_entry = readdir(cdir);
+	dentry = readdir(cdir);
 	files = NULL;
-	while (cdir_entry)
+	while (dentry)
 	{
-		if (*(cdir_entry->d_name) != '.' && \
-			ms_regex_wildcard(cdir_entry->d_name, wcstr, NULL, NULL))
-			ft_strapp(&files, ft_strdup(cdir_entry->d_name));
-		cdir_entry = readdir(cdir);
+		if (*(dentry->d_name) != '.' && \
+			ms_regex_wildcard(wcstr, dentry->d_name, wcstr))
+			ft_strapp(&files, ft_strdup(dentry->d_name));
+		dentry = readdir(cdir);
 	}
 	closedir(cdir);
 	return (files);
@@ -85,10 +83,10 @@ void	ms_replace_wildcard(char **str)
 	char	*wcs;
 	char	*deq;
 
+	deq = ft_strdup(*str);
+	ms_dequote_string(&deq, QU_ZERO);
 	if (ms_verify_wildcard(*str, QU_ZERO))
 	{
-		deq = ft_strdup(*str);
-		ms_dequote_string(&deq, QU_ZERO);
 		files = ms_wildcard_array(deq);
 		free(deq);
 		if (files && *files)
@@ -98,5 +96,10 @@ void	ms_replace_wildcard(char **str)
 			*str = wcs;
 		}
 		ft_free_tab((void **)(files));
+	}
+	else
+	{
+		free(*str);
+		*str = deq;
 	}
 }

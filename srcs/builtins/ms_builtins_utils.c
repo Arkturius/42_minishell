@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 19:49:54 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:10:21 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:03:57 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	ms_is_numeric(char *str)
 	while (ft_isdigit(*(str)))
 		str++;
 	if (sign)
-		return (!*str && str - tmp < 21);
-	return (!*str && (str - tmp) && (str - tmp < 20));
+		return (!*str);
+	return (!*str && (str - tmp));
 }
 
 char	*ms_backtrim(char *str, char c)

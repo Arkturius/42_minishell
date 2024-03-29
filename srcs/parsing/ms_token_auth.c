@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 00:56:54 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/19 19:59:26 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:07:12 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ms_valid_token(t_token *t, char **err_token)
 		*err_token = "newline";
 	if (t->type == TK_REDIRS && t->next->type != TK_NEWLIN)
 		*err_token = t->next->str;
-	return (t->type & (TK_BRACES | TK_STRING));
+	return (t->type & TK_STRING || !ft_strncmp(t->str, ")", 2));
 }
 
 int	ms_verify_brace(t_token *tokens)

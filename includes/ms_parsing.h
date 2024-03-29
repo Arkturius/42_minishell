@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 14:23:29 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/22 17:13:31 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/28 20:41:35 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ void		ms_tilde_expansion(t_token **tokens, t_envvar *home);
  * @brief			Replace a string by its wildcard equivalent if there is one.
  * 
  * @param str		String adress.
+ * @param export	Export boolean.
 */
 void		ms_replace_wildcard(char **str);
 
