@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:42:43 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/28 20:41:40 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/30 21:03:45 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,14 @@ t_error	ms_command_updater(t_command *cmd)
 {
 	ms_args_updater(cmd);
 	ms_args_splitter(cmd);
-	if (cmd->args && *cmd->args && \
-		**cmd->args != '.' && !ft_strchr(*cmd->args, '/'))
+	if (!cmd->args && !cmd->redirs)
+		return (ERR_NOTCMD);
+	if (cmd->args && *cmd->args)
 	{
 		free(cmd->path);
 		cmd->path = NULL;
 		cmd->path = ms_get_path(*cmd->args, *(cmd->envp));
 	}
-	if ((!cmd->path && !cmd->redirs))
-		return (ERR_NOTCMD);
 	if (cmd->args && *cmd->args && **cmd->args == '.' \
 		&& ft_strlen(*cmd->args) == 1)
 		return (ERR_NOTCMD);

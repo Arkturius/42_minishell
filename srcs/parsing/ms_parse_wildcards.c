@@ -6,37 +6,35 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:31:16 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/28 21:21:18 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 14:49:55 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ms_regex_wildcard(char *rule, char *file, char *tmp_r)
+int	ms_regex_wildcard(char *rule, char *file, int toskip)
 {
-	char	*next;
+	char	*len;
 
-	while (*file)
+	if (!rule || !file)
+		return (0);
+	if (!*rule && !*file)
+		return (1);
+	if (*rule == '*')
+		return (ms_regex_wildcard(rule + 1, file, 1));
+	if (!*file && *rule)
+		return (0);
+	if (!ft_strchr(rule, '*'))
+		return (!ft_strrncmp(rule, file, ft_strlen(rule)));
+	if (*rule == *file)
+		return (ms_regex_wildcard(rule + 1, file + 1, 0));
+	if (toskip)
 	{
-		next = NULL;
-		while (*tmp_r == '*')
-			tmp_r++;
-		if (!*tmp_r)
-			return (*(tmp_r - 1) == '*');
-		if (!ft_strchr(tmp_r, '*'))
-			next = ft_strrchr(file, *tmp_r);
-		else if (tmp_r != rule || *tmp_r == *file)
-			next = ft_strchr(file, *tmp_r);
-		if (next)
-			file += (next - file);
-		else
-			return (0);
-		while (*file && *tmp_r && *tmp_r != '*' && *tmp_r == *(file++))
-			tmp_r++;
+		len = ft_strchr(file, *rule);
+		if (len)
+			return (ms_regex_wildcard(rule, len, 0));
 	}
-	while (*tmp_r && *tmp_r == '*')
-		tmp_r++;
-	return (!*file && !*tmp_r);
+	return (0);
 }
 
 char	**ms_wildcard_array(char *wcstr)
@@ -60,7 +58,7 @@ char	**ms_wildcard_array(char *wcstr)
 	while (dentry)
 	{
 		if (*(dentry->d_name) != '.' && \
-			ms_regex_wildcard(wcstr, dentry->d_name, wcstr))
+			ms_regex_wildcard(wcstr, dentry->d_name, 0))
 			ft_strapp(&files, ft_strdup(dentry->d_name));
 		dentry = readdir(cdir);
 	}

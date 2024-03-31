@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:00:02 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:11:03 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:50:56 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ char	*ms_get_path(char *cmd, t_envvar *envp)
 	char	*path;
 	char	*bin;
 
-	if (!cmd)
-		return (ft_strdup(""));
-	if (!*cmd || ft_strchr(cmd, '/'))
+	if (!cmd || !*cmd || ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	while (envp && ft_strncmp(envp->name, "PATH", 5))
 		envp = envp->next;
@@ -35,6 +33,10 @@ char	*ms_get_path(char *cmd, t_envvar *envp)
 		path = ft_strjoin(envp->values[i++], bin, 0, 0);
 	}
 	free(bin);
+	if (!envp->values[i])
+		free(path);
+	if (!envp->values[i])
+		return (NULL);
 	return (path);
 }
 

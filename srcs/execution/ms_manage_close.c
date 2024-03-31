@@ -6,11 +6,32 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 17:43:40 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:22:35 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:58:57 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_error	ms_open_file(int *fd, char **file, int mode)
+{
+	if (ms_file_checker(file, mode))
+		return (ERR_AMBRED);
+	if (*fd > 2)
+		close(*fd);
+	if (mode != OPEN_READ && *fd != OP_FILEKO)
+		*fd = open(*file, mode, 0644);
+	else if (*fd != -1)
+		*fd = open(*file, mode);
+	if (*fd == -1)
+	{
+		if (errno == ENFILE)
+			ms_error_message(ERR_INVFDS, *file);
+		else
+			ms_error_message(ERR_NOFORD, *file);
+		return (ERR_INVFDS);
+	}
+	return (ERR_NOERRS);
+}
 
 void	ms_close_command(t_command *command)
 {

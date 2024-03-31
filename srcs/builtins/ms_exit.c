@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 07:38:34 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/11 14:59:20 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:40:01 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	ms_exit(t_command *cmd)
 		ft_dprintf(STDERR_FILENO, "exit\n");
 	if (!cmd || !argc)
 		ms_exit_manager(g_exit_code, ERR_NOERRS, cmd);
+	ms_exit_atoi(cmd->args[1], cmd);
 	if (!ms_is_numeric(cmd->args[1]))
 		ms_exit_manager(ERR_ERRORS, ERR_NOTNUM, cmd);
 	if (argc > 1)

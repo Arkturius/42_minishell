@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_file_manager.h                                  :+:      :+:    :+:   */
+/*   ms_file_manager.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:02:22 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:16:33 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 16:01:58 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ t_error		ms_manage_heredocs(t_node *nd, int *hd);
 t_error		ms_open_heredocs(t_command *cmd);
 
 /**
+ * @brief
+*/
+t_error		ms_file_checker(char **file, int mode);
+
+/**
  * @brief			Open a file.
  * 
  * @param fd		fd to fill.
@@ -84,6 +89,8 @@ t_error		ms_open_outputs(t_command *cmd);
  * @return			ERR_FAILED in case of error, ERR_NOERRS otherwise.
 */
 t_error		ms_open_inputs(t_command *cmd, int *hd_last);
+
+void		ms_connect_input(t_command *cmd, int hd_last);
 
 /* HEREDOC ****************************************************************** */
 

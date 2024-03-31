@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 22:00:02 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/11 10:36:13 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/30 16:07:00 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ms_error_message(t_error err, char *str)
 		ft_dprintf(STDERR_FILENO, ES_NOPERM, P_ERROR, str);
 	if (err == ERR_ISADIR)
 		ft_dprintf(STDERR_FILENO, ES_ISADIR, P_ERROR, str);
+	if (err == ERR_ISNDIR)
+		ft_dprintf(STDERR_FILENO, ES_ISNDIR, P_ERROR, str);
 	if (err == ERR_INVOPT)
 		ft_dprintf(STDERR_FILENO, ES_INVOPT, P_ERROR, *str, *(str + 1));
 	if (err == ERR_HDSTOP)

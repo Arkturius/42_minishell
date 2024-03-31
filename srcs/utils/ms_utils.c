@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:43:39 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/22 16:43:53 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:58:35 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,19 @@ char	*ms_get_temp_file(char *head, int size)
 		rand++;
 	}
 	return (ft_strjoin(head, tmp, "-", 0b10));
+}
+
+void	ms_connect_input(t_command *cmd, int hd_last)
+{
+	if (hd_last)
+	{
+		if (cmd->infile != STDIN_FILENO)
+			close(cmd->infile);
+		cmd->infile = cmd->heredoc;
+	}
+	else
+	{
+		if (cmd->heredoc > 2)
+			close(cmd->heredoc);
+	}
 }

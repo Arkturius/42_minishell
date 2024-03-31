@@ -129,6 +129,10 @@
 #  define ES_ISADIR "%s%s: Is a directory\n"
 # endif
 
+# ifndef ES_ISNDIR
+#  define ES_ISNDIR "%s%s: Not a directory\n"
+# endif
+
 # ifndef ES_INVOPT
 #  define ES_INVOPT "%s%c%c: Invalid option\n"
 # endif

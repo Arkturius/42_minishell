@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:02:28 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/28 20:41:55 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:55:53 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ t_error	ms_file_checker(char **file, int mode)
 	char	*var;
 
 	var = ft_strdup(*file);
-	ms_replace_wildcard(file);
 	if (ft_strchr(*file, '$'))
 		ms_replace_vars(ms_update_env(0, NULL), file, QU_ZERO, 0);
+	ms_replace_wildcard(file);
 	files = ft_split(*file, '\026');
 	if (ft_tab_len(files) > 1)
 	{
@@ -61,25 +61,33 @@ t_error	ms_file_checker(char **file, int mode)
 	return (ERR_NOERRS);
 }
 
-t_error	ms_open_file(int *fd, char **file, int mode)
+t_error	ms_input_checker(char *file)
 {
-	if (ms_file_checker(file, mode))
-		return (ERR_AMBRED);
-	if (*fd > 2)
-		close(*fd);
-	if (mode != OPEN_READ && *fd != OP_FILEKO)
-		*fd = open(*file, mode, 0644);
-	else if (*fd != -1)
-		*fd = open(*file, mode);
-	if (*fd == -1)
+	char	**files;
+	char	*var;
+
+	var = ft_strdup(file);
+	if (ft_strchr(file, '$'))
+		ms_replace_vars(ms_update_env(0, NULL), &file, QU_ZERO, 0);
+	ms_replace_wildcard(&file);
+	files = ft_split(file, '\026');
+	if (ft_tab_len(files) > 1)
 	{
-		if (errno == ENFILE)
-			ms_error_message(ERR_INVFDS, *file);
-		else
-			ms_error_message(ERR_NOFORD, *file);
-		return (ERR_INVFDS);
+		free(var);
+		free(file);
+		ft_free_tab((void **) files);
+		return (ERR_AMBRED);
 	}
-	return (ERR_NOERRS);
+	ms_dequote_string(&file, QU_ZERO);
+	free(var);
+	ft_free_tab((void **) files);
+	if (!access(file, R_OK))
+	{
+		free(file);
+		return (ERR_NOERRS);
+	}
+	free(file);
+	return (ERR_NOFORD);
 }
 
 t_error	ms_open_outputs(t_command *cmd)
@@ -91,7 +99,7 @@ t_error	ms_open_outputs(t_command *cmd)
 	op = ERR_NOERRS;
 	while (tmp && cmd->outfile != OP_FILEKO && op == ERR_NOERRS)
 	{
-		if (tmp->type == RD_INFILES && access(tmp->file, F_OK))
+		if (tmp->type == RD_INFILES && ms_input_checker(ft_strdup(tmp->file)))
 			break ;
 		if (tmp->type == RD_OUTPUTS)
 			op = ms_open_file(&(cmd->outfile), &(tmp->file), OPEN_CREATE);

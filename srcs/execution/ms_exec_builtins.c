@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:50:05 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/10 21:20:08 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:54:34 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,10 @@ t_error	ms_builtin(t_command *cmd, t_fd fd, t_executer *ex, t_mode mode)
 	{"cd", "pwd", "echo", "env", "export", "unset", "exit", NULL};
 
 	tmp = builtins_str;
-	trim = ms_backtrim(cmd->path, '/');
+	if (!cmd->path)
+		trim = ft_strdup(*cmd->args);
+	else
+		trim = ms_backtrim(cmd->path, '/');
 	while (*tmp && ft_strncmp(*tmp, trim, ft_strlen(*tmp) + 1))
 		tmp++;
 	free(trim);

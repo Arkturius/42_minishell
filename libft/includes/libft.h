@@ -6,7 +6,7 @@
 /*   By: rgramati <rgramati@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:16:25 by rgramati          #+#    #+#             */
-/*   Updated: 2024/03/26 14:46:03 by rgramati         ###   ########.fr       */
+/*   Updated: 2024/03/31 14:18:05 by rgramati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ int		ft_max(int a, int b);
 size_t	ft_strlen(char *str);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, size_t n);
+int		ft_strrncmp(char *s1, char *s2, size_t n);
 char	*ft_strcat(char *dest, char *src);
 size_t	ft_strlcat(char *dst, char *src, size_t size, int null_term);
 size_t	ft_strlcpy(char *dst, char *src, size_t size);
